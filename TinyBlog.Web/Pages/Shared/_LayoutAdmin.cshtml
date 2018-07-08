@@ -19,16 +19,8 @@
 </head>
 <body>
     <partial name="_CookieConsentPartial" />
-    <div class="blog-masthead">
-        <div class="container">
-            <nav class="blog-nav">
-                <a class="blog-nav-item active" asp-page="/Index">Home</a>
-                <a class="blog-nav-item" asp-page="/About">About</a>
-                <a class="blog-nav-item" asp-page="/Contact">Contact</a>
-                <a class="blog-nav-item" asp-page="/Admin/Post">Add Post</a>
-            </nav>
-        </div>
-    </div>
+
+    <partial name="_MenuPartial" />
 
     <div class="container">
 
@@ -42,9 +34,7 @@
         </div><!-- /.row -->
     </div><!-- /.container -->
 
-    <footer class="blog-footer">
-        <p>&copy; @DateTime.Now.Year - Tiny Blog <a target="_blank" href="https://github.com/kevinkeyt/tinyblog">Powered By: Tiny Blog</a></p>
-    </footer>
+    <partial name="_FooterPartial" />
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

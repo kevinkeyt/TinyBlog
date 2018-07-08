@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace TinyBlog.Web.Pages
@@ -10,9 +7,10 @@ namespace TinyBlog.Web.Pages
     {
         public string Message { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGetAsync()
         {
             Message = "Your application description page.";
+            return Page();
         }
     }
 }

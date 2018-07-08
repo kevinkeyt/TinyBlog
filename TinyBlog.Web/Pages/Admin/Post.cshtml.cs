@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TinyBlog.Data;
 using TinyBlog.Domain;
 
@@ -14,10 +17,12 @@ namespace TinyBlog.Web.Pages.Admin
         public Dictionary<string, int> Categories { get; set; }
 
         private readonly IDataContext dataContext;
+        private readonly ILogger<PostModel> logger;
 
-        public PostModel(IDataContext dataContext)
+        public PostModel(IDataContext dataContext, ILogger<PostModel> logger)
         {
             this.dataContext = dataContext;
+            this.logger = logger;
         }
 
         public IActionResult OnGet(string id)
@@ -26,14 +31,15 @@ namespace TinyBlog.Web.Pages.Admin
             if (string.IsNullOrEmpty(id))
             {
                 Post = new Post();
+                Post.Author = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "FullName").Value;
             }
             else
             {
                 Post = dataContext.GetPostById(id);
             }
-            // If post is null it should redirect to 404
             if(Post == null)
             {
+                logger.LogInformation($"Could not find post for id {id}.");
                 return NotFound();
             }
 
@@ -45,6 +51,7 @@ namespace TinyBlog.Web.Pages.Admin
             if(ModelState.IsValid)
             {
                 dataContext.Save(Post);
+                logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
             }
 
             return Page();
