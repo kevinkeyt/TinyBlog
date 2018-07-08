@@ -49,25 +49,5 @@ namespace TinyBlog.Web.Pages.Admin
 
             return Page();
         }
-
-        //public class AddCategoryModel
-        //{
-        //    public string Id { get; set; }
-        //    public string Category { get; set; }
-        //}
-
-        //public JsonResult OnPostAddCategory(AddCategoryModel model)
-        //{
-        //    Post = dataContext.GetPostById(model.Id);
-
-        //    if (!Post.PostCategories.Contains(model.Category))
-        //    {
-        //        Post.PostCategories.Add(model.Category);
-        //        // Save
-        //        dataContext.Save(Post);
-        //        return new JsonResult(new { added = true });
-        //    }
-        //    return new JsonResult(new { added = false });
-        //}
     }
 }

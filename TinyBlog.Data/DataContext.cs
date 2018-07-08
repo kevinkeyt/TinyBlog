@@ -53,20 +53,18 @@ namespace TinyBlog.Data
 
         public void Save(Post post)
         {
+            // TODO: Could maybe handle the insert and update of items in cache.
             var file = Path.Combine(folder, post.Id + ".json");
             post.LastModified = DateTime.UtcNow;
-
             var json = JsonConvert.SerializeObject(post);
-
+            var posts = GetAllPosts();
             if (!File.Exists(file))
-            {
-                var posts = GetAllPosts();
                 posts.Insert(0, post);
-                posts.Sort((p1, p2) => p2.PubDate.CompareTo(p1.PubDate));
-                // Replace Posts in cache
-                memoryCache.Set("posts", posts, cacheOptions);
-            }
-
+            posts.Sort((p1, p2) => p2.PubDate.CompareTo(p1.PubDate));
+            // Replace posts in cache
+            memoryCache.Remove("posts");
+            memoryCache.Set("posts", posts, cacheOptions);
+            // Save file to disk
             File.WriteAllText(file, json);
         }
 

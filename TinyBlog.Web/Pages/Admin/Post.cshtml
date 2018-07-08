@@ -44,7 +44,7 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" asp-for="Post.IsPublished" value="" /> Published
+                    <input asp-for="Post.IsPublished" /> Published
                 </label>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -92,18 +92,6 @@
             } else {
                 alert('Category already exists!');
             }
-
-            //var model = { 'Id': $("#id").val(), 'Category': category }
-            //$.ajax({
-            //    url: '/Admin/Post?handler=AddCategory',
-            //    type: 'Post',
-            //    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-            //    data: model
-            //}).done(function (result) {
-            //    if (result.added) {
-            //        window.location = foreach;
-            //    }
-            //});
         }
 
         function addCategoryToDOM(index, category) {
