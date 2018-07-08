@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using TinyBlog.Data;
 using TinyBlog.Domain;
 
@@ -15,17 +12,25 @@ namespace TinyBlog.Web.Pages
         public Post Post { get; set; }
 
         private readonly IDataContext dataContext;
+        private readonly ILogger<PostModel> logger;
 
-        public PostModel(IDataContext dataContext)
+        public PostModel(IDataContext dataContext, ILogger<PostModel> logger)
         {
             this.dataContext = dataContext;
+            this.logger = logger;
         }
 
-        public void OnGet(string slug)
+        public IActionResult OnGetAsync(string slug)
         {
             Slug = slug;
             Post = dataContext.GetPostBySlug(slug);
             // If post is null it should redirect to 404
+            if(Post == null)
+            {
+                logger.LogInformation($"Could not find post for slug {slug}.");
+                return NotFound();
+            }
+            return Page();
         }
     }
 }

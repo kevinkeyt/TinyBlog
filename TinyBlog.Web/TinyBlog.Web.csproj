@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>21c43a7f-59c8-40bd-9cbc-8bcb3e7f3918</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Pages\Account\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\Admin\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\Shared\_LayoutAdmin.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

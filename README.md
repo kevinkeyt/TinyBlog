@@ -5,3 +5,18 @@ Blog posts are saved to the local file system as JSON files. I drew inspiration 
 MiniBlog https://github.com/madskristensen/MiniBlog
 
 There are a lot of new features we'd like to add to help improve Tiny Blog so if you're interested in helping feel free to get involved!
+
+
+## Authentication
+The site uses simple cookie authentication. To authenticate you'll need to add the following AppSettings to your project or site.
+
+For more info on this process checkout the MS docs: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-2.1&tabs=aspnetcore2x
+
+
+```json
+{
+  "AppSettings:LoginEmail": "joe@tesing.com",
+  "AppSettings:LoginPassword": "Passw0rd",
+  "AppSettings:FullName": "Joe Tester"
+}
+```

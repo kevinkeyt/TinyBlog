@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace TinyBlog.Web.Pages
+namespace TinyBlog.Web.Pages.Account
 {
-    public class PrivacyModel : PageModel
+    public class AccessDeniedModel : PageModel
     {
-        public IActionResult OnGetAsync()
+        public IActionResult OnGet()
         {
             return Page();
         }
