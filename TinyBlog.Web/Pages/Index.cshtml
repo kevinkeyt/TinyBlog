@@ -1,0 +1,29 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+@foreach(var Post in @Model.Posts)
+{
+<div class="blog-post">
+    <h2 class="blog-post-title">@Post.Title</h2>
+    <p class="blog-post-meta"><i class="glyphicon glyphicon-calendar"></i>&nbsp;@Post.PubDate.ToString("MMMM dd, yyyy") by <a href="/">@Post.Author</a></p>
+    @Html.Raw(Post.Excerpt)
+
+    <div>
+        <a href="/post/@Post.Slug" class="btn btn-info">View More</a>
+        <!-- TODO: This will need to be locked down to admin's -->
+        <a href="/admin/post/@Post.Id" class="btn btn-primary">Edit Post</a><br/><br/>
+        <p class="blog-post-meta"><i class="glyphicon glyphicon-tag"></i>&nbsp;@string.Join(",", Post.PostCategories)</p>
+    </div>
+</div> 
+}
+
+<!-- TODO: Add Paging -->
+@*<nav>
+    <ul class="pager">
+        <li><a href="#">Previous</a></li>
+        <li><a href="#">Next</a></li>
+    </ul>
+</nav>*@

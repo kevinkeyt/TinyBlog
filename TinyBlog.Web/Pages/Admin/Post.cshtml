@@ -1,0 +1,113 @@
+﻿@page "{id?}"
+
+
+@model TinyBlog.Web.Pages.Admin.PostModel
+@{
+    ViewData["Title"] = "Manage Post Info";
+    Layout = "_LayoutAdmin";
+}
+
+<form method="post">
+    <div class="blog-post">
+        <div class="col-md-8">
+            <h2>Post Info</h2>
+            <input type="hidden" id="id" asp-for="Post.Id" />
+            <input type="hidden" asp-for="Post.LastModified" />
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input class="form-control" placeholder="Title" asp-for="Post.Title" id="title" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input class="form-control" placeholder="author" asp-for="Post.Author" id="Author" />
+                <span asp-validation-for="Post.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="slug">Slug</label>
+                <input class="form-control" placeholder="slug" asp-for="Post.Slug" id="Slug" />
+                <span asp-validation-for="Post.Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="excerpt">Excerpt</label>
+                <textarea class="form-control" placeholder="excerpt" asp-for="Post.Excerpt" id="Excerpt"></textarea>
+                <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" placeholder="content" asp-for="Post.Content" id="Content"></textarea>
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="pubdate">Publish Date</label>
+                <input type="date" class="form-control" placeholder="Publish Date" asp-for="Post.PubDate" id="pubdate" />
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" asp-for="Post.IsPublished" value="" /> Published
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="col-md-4">
+            <h3>Categories</h3>
+            <ol class="list-unstyled"id="categories"></ol>
+            <div class="row">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control" id="newcategory" placeholder="New Category" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="addCategory(false)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>tinymce.init({ selector: 'textarea' });</script>
+
+    <script>
+        var categories = [];
+        @foreach(var c in Model.Post.PostCategories)
+        {
+            @:categories.push("@c");
+        }
+        $(document).ready(function () {
+            for (var i = 0; i < categories.length; i++) {
+                addCategoryToDOM(i, categories[i]);
+            }
+        });
+        function addCategory() {
+            var category = $('#newcategory').val();
+            var exists = categories.filter(x => x.toLowerCase() === category.toLowerCase())[0];
+            if (!exists) {
+                addCategoryToDOM(categories.length, category);
+                categories.push(category);
+                $('#newcategory').val('').focus();
+            } else {
+                alert('Category already exists!');
+            }
+
+            //var model = { 'Id': $("#id").val(), 'Category': category }
+            //$.ajax({
+            //    url: '/Admin/Post?handler=AddCategory',
+            //    type: 'Post',
+            //    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+            //    data: model
+            //}).done(function (result) {
+            //    if (result.added) {
+            //        window.location = foreach;
+            //    }
+            //});
+        }
+
+        function addCategoryToDOM(index, category) {
+            $('#categories').append('<li><input type="hidden" id="Post_PostCategories_' + index + '_" name="Post.PostCategories[' + index + ']" value="' + category + '" /><label>' + category + '</label></li>');
+        }
+    </script>
+}

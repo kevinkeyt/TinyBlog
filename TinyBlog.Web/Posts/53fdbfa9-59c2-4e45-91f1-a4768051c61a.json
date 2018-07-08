@@ -1,0 +1,13 @@
+{
+  "Id": "53fdbfa9-59c2-4e45-91f1-a4768051c61a",
+  "Title": "Second Post Item",
+  "Author": "Kevin Keyt",
+  "Slug": "this-is-my-second-post",
+  "Excerpt": "<p>Hello from Post 2</p>",
+  "Content": "<h2>This is my second post post!</h2>",
+  "PubDate": "2018-06-05T00:00:00",
+  "LastModified": "2018-07-07T23:29:21.1329707Z",
+  "IsPublished": true,
+  "PostCategories": [ "Test", "New Post", "Category Test", "C#" ],
+  "Comments": []
+}

@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Tiny Blog</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+</head>
+<body>
+    <partial name="_CookieConsentPartial" />
+    <div class="blog-masthead">
+        <div class="container">
+            <nav class="blog-nav">
+                <a class="blog-nav-item active" asp-page="/Index">Home</a>
+                <a class="blog-nav-item" asp-page="/About">About</a>
+                <a class="blog-nav-item" asp-page="/Contact">Contact</a>
+                <a class="blog-nav-item" asp-page="/Admin/Post">Add Post</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="blog-header">
+            <h1 class="blog-title">Tiny Blog Blogging Engine</h1>
+            <p class="lead blog-description">A simple blogging engine for small to medium size blogs.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8 blog-main">
+                @RenderBody()
+            </div>
+
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>About</h4>
+                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Categories</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="/">C#</a></li>
+                    </ol>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Social Media</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="/">GitHub</a></li>
+                        <li><a href="/">Twitter</a></li>
+                        <li><a href="/">Facebook</a></li>
+                    </ol>
+                </div>
+            </div><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+    <footer class="blog-footer">
+        <p>&copy; @DateTime.Now.Year - Tiny Blog <a target="_blank" href="https://github.com/kevinkeyt/tinyblog">Powered By: Tiny Blog</a></p>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

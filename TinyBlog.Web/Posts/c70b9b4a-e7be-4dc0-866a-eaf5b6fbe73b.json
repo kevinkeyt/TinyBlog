@@ -1,0 +1,13 @@
+{
+  "Id": "c70b9b4a-e7be-4dc0-866a-eaf5b6fbe73b",
+  "Title": "First Post Item",
+  "Author": "Kevin Keyt",
+  "Slug": "this-is-my-first-post",
+  "Excerpt": "<p>Hello From Post 1</p>",
+  "Content": "<h2>This is my first post!</h2>",
+  "PubDate": "2018-06-04T00:00:00",
+  "LastModified": "2018-07-07T23:28:52.9192138Z",
+  "IsPublished": true,
+  "PostCategories": [ "New Post", "Test" ],
+  "Comments": []
+}
