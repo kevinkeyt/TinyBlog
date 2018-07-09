@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using TinyBlog.Domain;
 
 namespace TinyBlog.Data
@@ -11,8 +9,11 @@ namespace TinyBlog.Data
         IEnumerable<Post> GetPublicPosts();
         Post GetPostBySlug(string Slug);
         Post GetPostById(string Id);
-        void Save(Post post);
-        void Delete(Post post);
+        void SavePost(Post post);
+        void DeletePost(Post post);
         Dictionary<string, int> GetCategories();
+
+        Blog GetBlogInfo();
+        void SaveBlogInfo(Blog blog);
     }
 }

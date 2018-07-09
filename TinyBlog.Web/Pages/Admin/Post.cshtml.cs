@@ -50,7 +50,7 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if(ModelState.IsValid)
             {
-                dataContext.Save(Post);
+                dataContext.SavePost(Post);
                 logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
             }
 
