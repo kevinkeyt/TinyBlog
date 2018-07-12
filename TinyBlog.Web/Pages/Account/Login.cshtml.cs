@@ -60,14 +60,14 @@ namespace TinyBlog.Web.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-
+            Blog = dataContext.GetBlogInfo();
             if (ModelState.IsValid)
             {
                 var user = await AuthenticateUser();
                 if(user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid Login");
-                    logger.LogInformation($"Invalid Login For User {user.Email} logged in at {DateTime.UtcNow}.");
+                    logger.LogInformation($"Invalid Login For User {Input.Email} logged in at {DateTime.UtcNow}.");
                     return Page();
                 }
 
@@ -107,7 +107,7 @@ namespace TinyBlog.Web.Pages.Account
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}");
+                logger.LogInformation($"User {Input.Email} logged in at {DateTime.UtcNow}");
             
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }

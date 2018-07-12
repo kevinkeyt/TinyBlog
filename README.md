@@ -13,10 +13,11 @@ The site uses simple cookie authentication. To authenticate you'll need to add t
 For more info on this process checkout the MS docs: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-2.1&tabs=aspnetcore2x
 
 
+Here's an example using dotnet user secrets.
 ```json
 {
-  "AppSettings:LoginEmail": "joe@tesing.com",
-  "AppSettings:LoginPassword": "Passw0rd",
-  "AppSettings:FullName": "Joe Tester"
+  "dotnet usersecrets set AppSettings:LoginEmail": "joe@tesing.com",
+  "dotnet usersecrets set AppSettings:LoginPassword": "Passw0rd",
+  "dotnet usersecrets set AppSettings:FullName": "Joe Tester"
 }
 ```
