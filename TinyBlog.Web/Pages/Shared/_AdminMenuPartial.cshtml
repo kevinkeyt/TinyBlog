@@ -3,9 +3,6 @@
 @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
 {
     <a class="blog-nav-item" asp-page="/Admin/Post">Add Post</a>
+    <a class="blog-nav-item" asp-page="/Admin/Blog">Blog Info</a>
     <a class="blog-nav-item" asp-page="/Account/Logout">Log Out</a>
-}
-else
-{
-    <a class="blog-nav-item" asp-page="/Account/Login">Log In</a>
 }

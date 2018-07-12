@@ -6,11 +6,8 @@ using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages
 {
-    public class PostModel : PageModel
+    public class PostModel : BasePageModel
     {
-        public string Slug { get; set; }
-        public Post Post { get; set; }
-
         private readonly IDataContext dataContext;
         private readonly ILogger<PostModel> logger;
 
@@ -19,6 +16,9 @@ namespace TinyBlog.Web.Pages
             this.dataContext = dataContext;
             this.logger = logger;
         }
+
+        public string Slug { get; set; }
+        public Post Post { get; set; }
 
         public IActionResult OnGetAsync(string slug)
         {
@@ -30,6 +30,7 @@ namespace TinyBlog.Web.Pages
                 logger.LogInformation($"Could not find post for slug {slug}.");
                 return NotFound();
             }
+            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

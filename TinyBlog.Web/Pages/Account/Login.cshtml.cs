@@ -9,19 +9,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using TinyBlog.Data;
 using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : BasePageModel
     {
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
+        private readonly IDataContext dataContext;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration)
+        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IDataContext dataContext)
         {
             this.logger = logger;
             this.configuration = configuration;
+            this.dataContext = dataContext;
         }
 
         [BindProperty]
@@ -50,20 +53,21 @@ namespace TinyBlog.Web.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            Blog = dataContext.GetBlogInfo();
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-
+            Blog = dataContext.GetBlogInfo();
             if (ModelState.IsValid)
             {
                 var user = await AuthenticateUser();
                 if(user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid Login");
-                    logger.LogInformation($"Invalid Login For User {user.Email} logged in at {DateTime.UtcNow}.");
+                    logger.LogInformation($"Invalid Login For User {Input.Email} logged in at {DateTime.UtcNow}.");
                     return Page();
                 }
 
@@ -103,7 +107,7 @@ namespace TinyBlog.Web.Pages.Account
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}");
+                logger.LogInformation($"User {Input.Email} logged in at {DateTime.UtcNow}");
             
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }

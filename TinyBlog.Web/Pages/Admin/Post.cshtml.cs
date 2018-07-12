@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages.Admin
 {
-    public class PostModel : PageModel
+    public class PostModel : BasePageModel
     {
         [BindProperty]
         public Post Post { get; set; }
@@ -28,6 +27,7 @@ namespace TinyBlog.Web.Pages.Admin
         public IActionResult OnGet(string id)
         {
             Categories = dataContext.GetCategories();
+            Blog = dataContext.GetBlogInfo();
             if (string.IsNullOrEmpty(id))
             {
                 Post = new Post();
@@ -50,7 +50,7 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if(ModelState.IsValid)
             {
-                dataContext.Save(Post);
+                dataContext.SavePost(Post);
                 logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
             }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using TinyBlog.Data;
@@ -7,7 +6,7 @@ using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly IDataContext dataContext;
         private readonly ILogger<IndexModel> logger;
@@ -22,7 +21,8 @@ namespace TinyBlog.Web.Pages
 
         public IActionResult OnGetAsync()
         {
-            this.Posts = (HttpContext.User.Identity.IsAuthenticated) ? dataContext.GetAllPosts() : dataContext.GetPublicPosts();
+            Posts = (HttpContext.User.Identity.IsAuthenticated) ? this.dataContext.GetAllPosts() : dataContext.GetPublicPosts();
+            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

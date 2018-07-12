@@ -9,18 +9,18 @@ using TinyBlog.Domain;
 
 namespace TinyBlog.Data
 {
-    public class DataContext: IDataContext
+    public class JsonDataContext: IDataContext
     {
         private readonly IHostingEnvironment environment;
         private readonly IMemoryCache memoryCache;
         private readonly MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(24));
         private readonly string folder;
 
-        public DataContext(IHostingEnvironment environment, IMemoryCache memoryCache)
+        public JsonDataContext(IHostingEnvironment environment, IMemoryCache memoryCache)
         {
             this.environment = environment;
             this.memoryCache = memoryCache;
-            folder = environment.ContentRootPath + "\\Posts\\";
+            folder = environment.ContentRootPath + "\\Data\\Posts\\";
         }
 
         public List<Post> GetAllPosts()
@@ -28,9 +28,7 @@ namespace TinyBlog.Data
             List<Post> posts;
             if(!memoryCache.TryGetValue("posts", out posts))
             {
-                posts = LoadPosts();
-                
-                // Save Data to Cache
+                posts = LoadPosts();             
                 memoryCache.Set("posts", posts, cacheOptions);
             }      
             return posts;
@@ -51,7 +49,7 @@ namespace TinyBlog.Data
             return GetAllPosts().SingleOrDefault(x => x.Id == Id);
         }
 
-        public void Save(Post post)
+        public void SavePost(Post post)
         {
             var file = Path.Combine(folder, post.Id + ".json");
             post.LastModified = DateTime.UtcNow;
@@ -78,7 +76,7 @@ namespace TinyBlog.Data
             File.WriteAllText(file, json);
         }
 
-        public void Delete(Post post)
+        public void DeletePost(Post post)
         {
             var file = Path.Combine(folder, post.Id + ".json");
             File.Delete(file);
@@ -91,6 +89,35 @@ namespace TinyBlog.Data
                 .GroupBy(c => c, (c, items) => new { Category = c, Count = items.Count() })
                 .OrderBy(x => x.Category)
                 .ToDictionary(x => x.Category, x => x.Count);
+        }
+
+        public Blog GetBlogInfo()
+        {
+            var folder = environment.ContentRootPath + "\\Data\\";
+            var file = Path.Combine(folder, "BlogInfo.json");
+            Blog blogInfo = new Blog();
+            if (!File.Exists(file))
+            {
+                var json = JsonConvert.SerializeObject(blogInfo);
+                File.WriteAllText(file, json);
+            }
+            
+            if (!memoryCache.TryGetValue("bloginfo", out blogInfo))
+            {
+                blogInfo = JsonConvert.DeserializeObject<Blog>(File.ReadAllText(file));
+                memoryCache.Set("bloginfo", blogInfo, cacheOptions);
+            }
+            return blogInfo;
+        }
+
+        public void SaveBlogInfo(Blog blog)
+        {
+            var json = JsonConvert.SerializeObject(blog);
+            var folder = environment.ContentRootPath + "\\Data\\";
+            var file = Path.Combine(folder, "BlogInfo.json");            
+            memoryCache.Remove("bloginfo");
+            memoryCache.Set("bloginfo", blog, cacheOptions);
+            File.WriteAllText(file, json);
         }
 
         private List<Post> LoadPosts()

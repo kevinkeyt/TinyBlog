@@ -28,8 +28,11 @@ namespace TinyBlog.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddSingleton<DataContext>();
-            services.AddSingleton<IDataContext>(s => s.GetService<DataContext>());
+            //services.AddSingleton<JsonDataContext>();
+            //services.AddSingleton<IDataContext>(s => s.GetService<JsonDataContext>());
+
+            services.AddTransient<IDataContext, JsonDataContext>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();
             services.AddMvc()
