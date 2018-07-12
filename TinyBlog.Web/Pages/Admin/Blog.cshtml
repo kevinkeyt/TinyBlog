@@ -29,9 +29,10 @@
             <span asp-validation-for="BlogInfo.AboutTitle" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="aboutdescription">About Description</label>
+            <label for="aboutdescription">About Description</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('aboutdescription', 'save-content')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
             <textarea class="form-control" placeholder="About Description" asp-for="BlogInfo.AboutDescription" id="aboutdescription"></textarea>
             <span asp-validation-for="BlogInfo.AboutDescription" class="text-danger"></span>
+            <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('aboutdescription', 'save-content')" type="button">Save</button>
         </div>
         <div class="form-group">
             <label for="address">Address</label>
@@ -80,4 +81,16 @@
 @section Scripts
     {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function editContent(control, btn) {
+            $("#" + control).summernote({ focus: true });
+            $("#" + btn).show();
+        }
+
+        function saveContent(control, btn) {
+            var html = $('#' + control).summernote('code');
+            $('#' + control).val(html).summernote('destroy');
+            $('#' + btn).hide();
+        }
+    </script>
 }

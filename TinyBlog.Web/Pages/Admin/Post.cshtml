@@ -29,14 +29,16 @@
                 <span asp-validation-for="Post.Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="excerpt">Excerpt</label>
+                <label for="excerpt">Excerpt</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Excerpt', 'save-excerpt')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
                 <textarea class="form-control" placeholder="excerpt" asp-for="Post.Excerpt" id="Excerpt"></textarea>
                 <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
+                <button id="save-excerpt" style="display:none;" class="btn btn-primary" onclick="saveContent('Excerpt', 'save-excerpt')" type="button">Save</button>
             </div>
             <div class="form-group">
-                <label for="content">Content</label>
+                <label for="content">Content</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Content', 'save-content')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
                 <textarea class="form-control" placeholder="content" asp-for="Post.Content" id="Content"></textarea>
                 <span asp-validation-for="Post.Content" class="text-danger"></span>
+                <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('Content', 'save-content')" type="button">Save</button>
             </div>
             <div class="form-group">
                 <label for="pubdate">Publish Date</label>
@@ -51,7 +53,7 @@
         </div>
         <div class="col-md-4">
             <h3>Categories</h3>
-            <ol class="list-unstyled"id="categories"></ol>
+            <ol class="list-unstyled" id="categories"></ol>
             <div class="row">
                 <div class="form-inline">
                     <div class="form-group">
@@ -69,8 +71,6 @@
 @section Scripts
     {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>tinymce.init({ selector: 'textarea' });</script>
-
     <script>
         var categories = [];
         @foreach(var c in Model.Post.PostCategories)
@@ -96,6 +96,17 @@
 
         function addCategoryToDOM(index, category) {
             $('#categories').append('<li><input type="hidden" id="Post_PostCategories_' + index + '_" name="Post.PostCategories[' + index + ']" value="' + category + '" /><label>' + category + '</label></li>');
+        }
+
+        function editContent(control, btn) {
+            $("#" + control).summernote({ focus: true });
+            $("#" + btn).show();
+        }
+
+        function saveContent(control, btn) {
+            var html = $('#' + control).summernote('code');
+            $('#' + control).val(html).summernote('destroy');
+            $('#' + btn).hide();
         }
     </script>
 }
