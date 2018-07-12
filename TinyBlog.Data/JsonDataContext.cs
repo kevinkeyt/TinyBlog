@@ -93,10 +93,17 @@ namespace TinyBlog.Data
 
         public Blog GetBlogInfo()
         {
-            Blog blogInfo;
+            var folder = environment.ContentRootPath + "\\Data\\";
+            var file = Path.Combine(folder, "BlogInfo.json");
+            Blog blogInfo = new Blog();
+            if (!File.Exists(file))
+            {
+                var json = JsonConvert.SerializeObject(blogInfo);
+                File.WriteAllText(file, json);
+            }
+            
             if (!memoryCache.TryGetValue("bloginfo", out blogInfo))
             {
-                var file = Path.Combine(folder, "BlogInfo.json");
                 blogInfo = JsonConvert.DeserializeObject<Blog>(File.ReadAllText(file));
                 memoryCache.Set("bloginfo", blogInfo, cacheOptions);
             }
@@ -106,7 +113,8 @@ namespace TinyBlog.Data
         public void SaveBlogInfo(Blog blog)
         {
             var json = JsonConvert.SerializeObject(blog);
-            var file = Path.Combine(folder, "BlogInfo.json");
+            var folder = environment.ContentRootPath + "\\Data\\";
+            var file = Path.Combine(folder, "BlogInfo.json");            
             memoryCache.Remove("bloginfo");
             memoryCache.Set("bloginfo", blog, cacheOptions);
             File.WriteAllText(file, json);

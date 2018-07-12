@@ -9,19 +9,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using TinyBlog.Data;
 using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : BasePageModel
     {
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
+        private readonly IDataContext dataContext;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration)
+        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IDataContext dataContext)
         {
             this.logger = logger;
             this.configuration = configuration;
+            this.dataContext = dataContext;
         }
 
         [BindProperty]
@@ -50,6 +53,7 @@ namespace TinyBlog.Web.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            Blog = dataContext.GetBlogInfo();
             ReturnUrl = returnUrl;
         }
 

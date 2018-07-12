@@ -9,7 +9,7 @@ using TinyBlog.Domain;
 
 namespace TinyBlog.Web.Pages.Admin
 {
-    public class PostModel : PageModel
+    public class PostModel : BasePageModel
     {
         [BindProperty]
         public Post Post { get; set; }
@@ -28,6 +28,7 @@ namespace TinyBlog.Web.Pages.Admin
         public IActionResult OnGet(string id)
         {
             Categories = dataContext.GetCategories();
+            Blog = dataContext.GetBlogInfo();
             if (string.IsNullOrEmpty(id))
             {
                 Post = new Post();

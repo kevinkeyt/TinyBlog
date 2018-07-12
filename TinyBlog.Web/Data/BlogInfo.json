@@ -1,0 +1,14 @@
+{
+  "Name": "Tiny Blog",
+  "Title": "Tiny Blog Engine",
+  "Description": "A simple blogging engine for small to medium size blogs.",
+  "AboutTitle": null,
+  "AboutDescription": "Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
+  "Phone": null,
+  "Email": null,
+  "CdnUrl": null,
+  "Twitter": "",
+  "Facebook": "",
+  "GitHub": "https://github.com/kevinkeyt",
+  "LinkedIn": null
+}
