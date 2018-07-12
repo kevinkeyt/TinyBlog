@@ -1,4 +1,4 @@
 ﻿@model TinyBlog.Web.Pages.BasePageModel
 <footer class="blog-footer">
-    <p>&copy; @DateTime.Now.Year - @Model.Blog.Name <a target="_blank" href="https://github.com/kevinkeyt/tinyblog">Powered By: @Model.Blog.Name</a></p>
+    <p>&copy; @DateTime.Now.Year - <a asp-page="/Account/Login">@Model.Blog.Name</a> Powered By: <a target="_blank" href="https://github.com/kevinkeyt/tinyblog">TinyBlog</a></p>
 </footer>
