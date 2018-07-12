@@ -12,20 +12,16 @@ namespace TinyBlog.Web.Pages.Admin
         [BindProperty]
         public Blog BlogInfo { get; set; }
 
-        private readonly IDataContext dataContext;
         private readonly ILogger<BlogModel> logger;
 
-        public BlogModel(IDataContext dataContext, ILogger<BlogModel> logger)
+        public BlogModel(IDataContext dataContext, ILogger<BlogModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
         public IActionResult OnGet()
         {
-            Blog = dataContext.GetBlogInfo();
             BlogInfo = Blog;
-
             return Page();
         }
 

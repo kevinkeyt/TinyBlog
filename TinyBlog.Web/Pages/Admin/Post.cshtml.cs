@@ -13,25 +13,21 @@ namespace TinyBlog.Web.Pages.Admin
         [BindProperty]
         public Post Post { get; set; }
 
-        public Dictionary<string, int> Categories { get; set; }
-
-        private readonly IDataContext dataContext;
         private readonly ILogger<PostModel> logger;
 
-        public PostModel(IDataContext dataContext, ILogger<PostModel> logger)
+        public PostModel(IDataContext dataContext, ILogger<PostModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
         public IActionResult OnGet(string id)
         {
-            Categories = dataContext.GetCategories();
-            Blog = dataContext.GetBlogInfo();
             if (string.IsNullOrEmpty(id))
             {
-                Post = new Post();
-                Post.Author = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "FullName").Value;
+                Post = new Post
+                {
+                    Author = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "FullName").Value
+                };
             }
             else
             {
@@ -54,6 +50,7 @@ namespace TinyBlog.Web.Pages.Admin
                 logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
             }
             Blog = dataContext.GetBlogInfo();
+            Categories = dataContext.GetCategories();
             return Page();
         }
     }

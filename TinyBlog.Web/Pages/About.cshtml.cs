@@ -7,12 +7,10 @@ namespace TinyBlog.Web.Pages
 {
     public class AboutModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<AboutModel> logger;
 
-        public AboutModel(IDataContext dataContext, ILogger<AboutModel> logger)
+        public AboutModel(IDataContext dataContext, ILogger<AboutModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
@@ -21,7 +19,6 @@ namespace TinyBlog.Web.Pages
         public IActionResult OnGetAsync()
         {
             Message = "Your application description page.";
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

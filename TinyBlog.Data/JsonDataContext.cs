@@ -38,6 +38,11 @@ namespace TinyBlog.Data
         {
             return GetAllPosts().Where(p => (p.IsPublished == true && p.PubDate <= DateTime.UtcNow));
         }
+        
+        public IEnumerable<Post> GetPostsByCategory(string category)
+        {
+            return GetPublicPosts().Where(x => x.PostCategories.Contains(category));
+        }
 
         public Post GetPostBySlug(string Slug)
         {

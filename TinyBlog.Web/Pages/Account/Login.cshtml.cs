@@ -18,13 +18,11 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
-        private readonly IDataContext dataContext;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IDataContext dataContext)
+        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IDataContext dataContext) : base(dataContext)
         {
             this.logger = logger;
             this.configuration = configuration;
-            this.dataContext = dataContext;
         }
 
         [BindProperty]
@@ -53,7 +51,6 @@ namespace TinyBlog.Web.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            Blog = dataContext.GetBlogInfo();
             ReturnUrl = returnUrl;
         }
 
@@ -85,7 +82,7 @@ namespace TinyBlog.Web.Pages.Account
                     //AllowRefresh = <bool>,
                     // Refreshing the authentication session should be allowed.
 
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(3),
                     // The time at which the authentication ticket expires. A 
                     // value set here overrides the ExpireTimeSpan option of 
                     // CookieAuthenticationOptions set with AddCookie.

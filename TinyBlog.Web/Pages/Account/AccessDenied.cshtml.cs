@@ -7,17 +7,14 @@ namespace TinyBlog.Web.Pages.Account
 {
     public class AccessDeniedModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<AccessDeniedModel> logger;
 
-        public AccessDeniedModel(IDataContext dataContext, ILogger<AccessDeniedModel> logger)
+        public AccessDeniedModel(IDataContext dataContext, ILogger<AccessDeniedModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
         public IActionResult OnGet()
         {
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }
