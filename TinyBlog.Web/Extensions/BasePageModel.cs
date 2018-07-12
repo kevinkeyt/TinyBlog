@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TinyBlog.Data;
 using TinyBlog.Domain;
 
@@ -13,5 +9,15 @@ namespace TinyBlog.Web.Pages
     {
         public Blog Blog { get; set; }
 
+        public Dictionary<string, int> Categories { get; set; }
+
+        internal readonly IDataContext dataContext;
+
+        public BasePageModel(IDataContext dataContext)
+        {
+            this.dataContext = dataContext;
+            Blog = dataContext.GetBlogInfo();
+            Categories = dataContext.GetCategories();
+        }
     }
 }

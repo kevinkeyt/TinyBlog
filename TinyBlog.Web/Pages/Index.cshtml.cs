@@ -8,21 +8,22 @@ namespace TinyBlog.Web.Pages
 {
     public class IndexModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<IndexModel> logger;
 
-        public IndexModel(IDataContext dataContext, ILogger<IndexModel> logger)
+        public IndexModel(IDataContext dataContext, ILogger<IndexModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
         public IEnumerable<Post> Posts { get; set; }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGetAsync(string c)
         {
-            Posts = (HttpContext.User.Identity.IsAuthenticated) ? this.dataContext.GetAllPosts() : dataContext.GetPublicPosts();
-            Blog = dataContext.GetBlogInfo();
+            if (!string.IsNullOrEmpty(c))
+                Posts = dataContext.GetPostsByCategory(c);
+            else
+                Posts = (HttpContext.User.Identity.IsAuthenticated) ? dataContext.GetAllPosts() : dataContext.GetPublicPosts();
+            
             return Page();
         }
     }

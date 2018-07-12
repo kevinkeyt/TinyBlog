@@ -14,12 +14,10 @@ namespace TinyBlog.Web.Pages.Account
     public class LogoutModel : BasePageModel
     {
         private readonly ILogger<LogoutModel> logger;
-        private readonly IDataContext dataContext;
 
-        public LogoutModel(ILogger<LogoutModel> logger, IDataContext dataContext)
+        public LogoutModel(ILogger<LogoutModel> logger, IDataContext dataContext) : base(dataContext)
         {
             this.logger = logger;
-            this.dataContext = dataContext;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -27,7 +25,6 @@ namespace TinyBlog.Web.Pages.Account
             logger.LogInformation($"User {User.Identity.Name} logged out at {DateTime.UtcNow}.");
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            Blog = dataContext.GetBlogInfo();
             return Redirect("/Account/SignedOut");
         }
     }

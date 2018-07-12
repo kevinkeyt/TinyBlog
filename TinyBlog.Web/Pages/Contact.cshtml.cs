@@ -7,12 +7,10 @@ namespace TinyBlog.Web.Pages
 {
     public class ContactModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<ContactModel> logger;
 
-        public ContactModel(IDataContext dataContext, ILogger<ContactModel> logger)
+        public ContactModel(IDataContext dataContext, ILogger<ContactModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
@@ -21,7 +19,6 @@ namespace TinyBlog.Web.Pages
         public IActionResult OnGetAsync()
         {
             Message = "Your contact page.";
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

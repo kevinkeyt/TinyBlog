@@ -8,12 +8,10 @@ namespace TinyBlog.Web.Pages
 {
     public class PostModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<PostModel> logger;
 
-        public PostModel(IDataContext dataContext, ILogger<PostModel> logger)
+        public PostModel(IDataContext dataContext, ILogger<PostModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
@@ -30,7 +28,6 @@ namespace TinyBlog.Web.Pages
                 logger.LogInformation($"Could not find post for slug {slug}.");
                 return NotFound();
             }
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

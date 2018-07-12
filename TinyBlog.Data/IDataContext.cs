@@ -7,6 +7,7 @@ namespace TinyBlog.Data
     {
         List<Post> GetAllPosts();
         IEnumerable<Post> GetPublicPosts();
+        IEnumerable<Post> GetPostsByCategory(string category);
         Post GetPostBySlug(string Slug);
         Post GetPostById(string Id);
         void SavePost(Post post);

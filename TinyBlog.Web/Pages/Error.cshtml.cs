@@ -8,12 +8,10 @@ namespace TinyBlog.Web.Pages
 {
     public class ErrorModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<ErrorModel> logger;
 
-        public ErrorModel(IDataContext dataContext, ILogger<ErrorModel> logger)
+        public ErrorModel(IDataContext dataContext, ILogger<ErrorModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
@@ -25,7 +23,6 @@ namespace TinyBlog.Web.Pages
         public IActionResult OnGetAsync()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }

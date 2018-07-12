@@ -7,18 +7,15 @@ namespace TinyBlog.Web.Pages
 {
     public class PrivacyModel : BasePageModel
     {
-        private readonly IDataContext dataContext;
         private readonly ILogger<PrivacyModel> logger;
 
-        public PrivacyModel(IDataContext dataContext, ILogger<PrivacyModel> logger)
+        public PrivacyModel(IDataContext dataContext, ILogger<PrivacyModel> logger) : base(dataContext)
         {
-            this.dataContext = dataContext;
             this.logger = logger;
         }
 
         public IActionResult OnGetAsync()
         {
-            Blog = dataContext.GetBlogInfo();
             return Page();
         }
     }
