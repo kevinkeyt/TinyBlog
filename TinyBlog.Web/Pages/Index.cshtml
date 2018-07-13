@@ -1,6 +1,5 @@
 ﻿@page "{c?}"
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
-
 @model IndexModel
 @{
     ViewData["Title"] = "Home";
@@ -11,7 +10,7 @@
     <div class="blog-post">
         <h2 class="blog-post-title">@Post.Title</h2>
         <p class="blog-post-meta"><i class="glyphicon glyphicon-calendar"></i>&nbsp;@Post.PubDate.ToString("MMMM dd, yyyy") by <a href="/">@Post.Author</a></p>
-        @Html.Raw(Post.Excerpt)
+        @Html.ProcessHtml(Model.Blog, Post.Excerpt)
 
         <div>
             <a href="/post/@Post.Slug" class="btn btn-info">View More</a>

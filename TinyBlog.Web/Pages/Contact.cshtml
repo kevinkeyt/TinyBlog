@@ -6,7 +6,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <address>
-    @Html.Raw(Model.Blog.Address)
+    @Html.ProcessHtml(Model.Blog, Model.Blog.Address)
 </address>
 
 <address>
