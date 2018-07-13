@@ -5,4 +5,4 @@
 }
 <h3>@Model.Blog.AboutTitle</h3>
 
-<p>@Html.Raw(Model.Blog.AboutDescription)</p>
+<p>@Html.ProcessHtml(Model.Blog, Model.Blog.AboutDescription)</p>

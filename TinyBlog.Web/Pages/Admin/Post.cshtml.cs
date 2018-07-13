@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TinyBlog.Data;
 using TinyBlog.Domain;
 
@@ -13,10 +17,12 @@ namespace TinyBlog.Web.Pages.Admin
         [BindProperty]
         public Post Post { get; set; }
 
+        private IHostingEnvironment Environment { get; set; }
         private readonly ILogger<PostModel> logger;
 
-        public PostModel(IDataContext dataContext, ILogger<PostModel> logger) : base(dataContext)
+        public PostModel(IHostingEnvironment environment, IDataContext dataContext, ILogger<PostModel> logger) : base(dataContext)
         {
+            this.Environment = environment;
             this.logger = logger;
         }
 
@@ -52,6 +58,31 @@ namespace TinyBlog.Web.Pages.Admin
             Blog = dataContext.GetBlogInfo();
             Categories = dataContext.GetCategories();
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostUploadImage(IFormFile file)
+        {
+            var folder = Environment.WebRootPath + "\\images\\";
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            if (file.Length > 0)
+            {
+                var filePath = Path.Combine(folder, file.FileName);
+                try
+                {
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                return new JsonResult(new { url = "/images/" + file.FileName });
+            }
+            return null;
         }
     }
 }
