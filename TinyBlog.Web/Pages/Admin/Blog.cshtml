@@ -19,6 +19,16 @@
             <span asp-validation-for="BlogInfo.Title" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label for="title">Share Url</label>
+            <input class="form-control" placeholder="ShareUrl" asp-for="BlogInfo.ShareUrl" id="shareurl" />
+            <span asp-validation-for="BlogInfo.ShareUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="title">Share Image Url</label>
+            <input class="form-control" placeholder="ShareImageUrl" asp-for="BlogInfo.ShareImageUrl" id="shareimageurl" />
+            <span asp-validation-for="BlogInfo.ShareImageUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" placeholder="Description" asp-for="BlogInfo.Description" id="description"></textarea>
             <span asp-validation-for="BlogInfo.Description" class="text-danger"></span>
@@ -58,6 +68,11 @@
             <label for="twitter">Twitter</label>
             <input class="form-control" placeholder="Twitter" asp-for="BlogInfo.Twitter" id="twitter" />
             <span asp-validation-for="BlogInfo.Twitter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="twitter">Twitter Name</label>
+            <input class="form-control" placeholder="TwitterName" asp-for="BlogInfo.TwitterName" id="twittername" />
+            <span asp-validation-for="BlogInfo.TwitterName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="facebook">Facebook</label>

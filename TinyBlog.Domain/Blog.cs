@@ -10,6 +10,8 @@ namespace TinyBlog.Domain
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
+        public string ShareUrl { get; set; }
+        public string ShareImageUrl { get; set; }
         public string AboutTitle { get; set; }
         public string AboutDescription { get; set; }
         public string Address { get; set; }
@@ -17,6 +19,7 @@ namespace TinyBlog.Domain
         public string Email { get; set; }
         public string CdnUrl { get; set; }
         public string Twitter { get; set; }
+        public string TwitterName { get; set; }
         public string Facebook { get; set; }
         public string GitHub { get; set; }
         public string LinkedIn { get; set; }
