@@ -3,24 +3,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TinyBlog.Data;
-using TinyBlog.Domain;
+using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages.Admin
 {
     public class PostModel : BasePageModel
     {
         [BindProperty]
-        public Post Post { get; set; }
+        public PostViewModel Post { get; set; }
 
         private IHostingEnvironment Environment { get; set; }
         private readonly ILogger<PostModel> logger;
 
-        public PostModel(IHostingEnvironment environment, IDataContext dataContext, ILogger<PostModel> logger) : base(dataContext)
+        public PostModel(IHostingEnvironment environment, IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PostModel> logger) : base(blogRepository, postRepository)
         {
             this.Environment = environment;
             this.logger = logger;
@@ -30,14 +29,14 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if (string.IsNullOrEmpty(id))
             {
-                Post = new Post
+                Post = new PostViewModel
                 {
                     Author = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "FullName").Value
                 };
             }
             else
             {
-                Post = dataContext.GetPostById(id);
+                Post = PostViewModel.FromPostEntity(postRepository.GetById(id));
             }
             if(Post == null)
             {
@@ -52,11 +51,24 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if(ModelState.IsValid)
             {
-                dataContext.SavePost(Post);
-                logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
+                var post = PostViewModel.ToPostEntity(Post);
+                if (string.IsNullOrEmpty(Post.Id))
+                {
+                    // Add
+                    post.Id = Guid.NewGuid().ToString();
+                    post.PublishPost(post.PubDate);
+                    postRepository.Add(post);
+                    logger.LogInformation($"Post {Post.Title} was added on {DateTime.UtcNow}.");
+                    return Redirect($"/Admin/Post/{post.Id}");
+                }
+                else
+                {
+                    postRepository.Update(post);
+                    logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
+                }
             }
-            Blog = dataContext.GetBlogInfo();
-            Categories = dataContext.GetCategories();
+            Blog = BlogViewModel.FromBlogEntity(blogRepository.GetBlogInfo());
+            Categories = postRepository.GetCategories();
             return Page();
         }
 

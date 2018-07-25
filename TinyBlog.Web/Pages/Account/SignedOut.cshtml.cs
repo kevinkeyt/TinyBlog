@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages.Account
 {
@@ -9,7 +8,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<SignedOutModel> logger;
 
-        public SignedOutModel(ILogger<SignedOutModel> logger, IDataContext dataContext) : base(dataContext)
+        public SignedOutModel(ILogger<SignedOutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }

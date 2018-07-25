@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using TinyBlog.Data;
-using TinyBlog.Domain;
+using System.Linq;
+using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages
 {
@@ -10,19 +11,22 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<IndexModel> logger;
 
-        public IndexModel(IDataContext dataContext, ILogger<IndexModel> logger) : base(dataContext)
+        public IndexModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<IndexModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }
 
-        public IEnumerable<Post> Posts { get; set; }
+        public IEnumerable<PostViewModel> Posts { get; set; }
 
         public IActionResult OnGetAsync(string c)
         {
             if (!string.IsNullOrEmpty(c))
-                Posts = dataContext.GetPostsByCategory(c);
+                Posts = postRepository.GetPostsByCategory(c)
+                    .Select(x => PostViewModel.FromPostEntity(x));
             else
-                Posts = (HttpContext.User.Identity.IsAuthenticated) ? dataContext.GetAllPosts() : dataContext.GetPublicPosts();
+                Posts = (HttpContext.User.Identity.IsAuthenticated) ? postRepository.ListAll()
+                    .Select(x => PostViewModel.FromPostEntity(x)) : postRepository.GetPublicPosts()
+                    .Select(x => PostViewModel.FromPostEntity(x));
             
             return Page();
         }

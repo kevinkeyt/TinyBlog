@@ -1,4 +1,4 @@
-﻿namespace TinyBlog.Domain
+﻿namespace TinyBlog.Core.Entities
 {
     public class ApplicationUser
     {

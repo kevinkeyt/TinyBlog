@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
+using TinyBlog.Infrastructure.Data;
 
 namespace TinyBlog.Web
 {
@@ -28,10 +29,8 @@ namespace TinyBlog.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddSingleton<JsonDataContext>();
-            //services.AddSingleton<IDataContext>(s => s.GetService<JsonDataContext>());
-
-            services.AddTransient<IDataContext, JsonDataContext>();
+            services.AddScoped<IBlogRepository, BlogRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();

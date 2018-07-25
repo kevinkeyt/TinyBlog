@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
-using TinyBlog.Data;
-using TinyBlog.Domain;
+using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages
 {
     public class BasePageModel : PageModel
     {
-        public Blog Blog { get; set; }
+        public BlogViewModel Blog { get; set; }
 
         public Dictionary<string, int> Categories { get; set; }
 
-        internal readonly IDataContext dataContext;
+        internal readonly IBlogRepository blogRepository;
+        internal readonly IPostRepository postRepository;
 
-        public BasePageModel(IDataContext dataContext)
+        public BasePageModel(IBlogRepository blogRepository, IPostRepository postRepository)
         {
-            this.dataContext = dataContext;
-            Blog = dataContext.GetBlogInfo();
-            Categories = dataContext.GetCategories();
+            this.blogRepository = blogRepository;
+            this.postRepository = postRepository;
+            Blog = BlogViewModel.FromBlogEntity(blogRepository.GetBlogInfo());
+            Categories = postRepository.GetCategories();
         }
     }
 }

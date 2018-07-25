@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages.Account
 {
@@ -9,7 +8,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<AccessDeniedModel> logger;
 
-        public AccessDeniedModel(IDataContext dataContext, ILogger<AccessDeniedModel> logger) : base(dataContext)
+        public AccessDeniedModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<AccessDeniedModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }

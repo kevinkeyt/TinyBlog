@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
-using TinyBlog.Domain;
+using TinyBlog.Core.Entities;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages.Account
 {
@@ -19,7 +18,7 @@ namespace TinyBlog.Web.Pages.Account
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IDataContext dataContext) : base(dataContext)
+        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
         {
             this.logger = logger;
             this.configuration = configuration;
@@ -57,7 +56,7 @@ namespace TinyBlog.Web.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            Blog = dataContext.GetBlogInfo();
+            // Blog = dataContext.GetBlogInfo();
             if (ModelState.IsValid)
             {
                 var user = await AuthenticateUser();

@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using TinyBlog.Core.SharedKernel;
 
-namespace TinyBlog.Domain
+namespace TinyBlog.Core.Entities
 {
-    public class Blog
+    public class Blog : BaseEntity
     {
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string Title { get; set; }
-        [Required]
         public string Description { get; set; }
         public string ShareUrl { get; set; }
         public string ShareImageUrl { get; set; }

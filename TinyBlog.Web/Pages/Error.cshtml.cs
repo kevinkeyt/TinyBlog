@@ -1,8 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages
 {
@@ -10,7 +9,7 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<ErrorModel> logger;
 
-        public ErrorModel(IDataContext dataContext, ILogger<ErrorModel> logger) : base(dataContext)
+        public ErrorModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<ErrorModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }

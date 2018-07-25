@@ -1,15 +1,14 @@
 ﻿using System;
+using TinyBlog.Core.SharedKernel;
 
-namespace TinyBlog.Domain
+namespace TinyBlog.Core.Entities
 {
-    public class Comment
+    public class Comment : BaseEntity
     {
         public Comment()
         {
-            Id = Guid.NewGuid().ToString();
-            PubDate = DateTime.UtcNow;
         }
-        public string Id { get; set; }
+
         public string Author { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }

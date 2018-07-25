@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages
 {
@@ -9,7 +8,7 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<PrivacyModel> logger;
 
-        public PrivacyModel(IDataContext dataContext, ILogger<PrivacyModel> logger) : base(dataContext)
+        public PrivacyModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PrivacyModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }

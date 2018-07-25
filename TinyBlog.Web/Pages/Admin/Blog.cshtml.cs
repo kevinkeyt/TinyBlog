@@ -1,20 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
-using TinyBlog.Data;
-using TinyBlog.Domain;
+using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages.Admin
 {
     public class BlogModel : BasePageModel
     {
         [BindProperty]
-        public Blog BlogInfo { get; set; }
+        public BlogViewModel BlogInfo { get; set; }
 
         private readonly ILogger<BlogModel> logger;
-
-        public BlogModel(IDataContext dataContext, ILogger<BlogModel> logger) : base(dataContext)
+        public BlogModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<BlogModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }
@@ -30,7 +28,7 @@ namespace TinyBlog.Web.Pages.Admin
             Blog = BlogInfo;
             if (ModelState.IsValid)
             {
-                dataContext.SaveBlogInfo(BlogInfo);
+                blogRepository.SaveBlogInfo(BlogViewModel.ToBlogEntity(BlogInfo));
                 logger.LogInformation($"Blog info was updated on {DateTime.UtcNow}");
             }
             return Page();

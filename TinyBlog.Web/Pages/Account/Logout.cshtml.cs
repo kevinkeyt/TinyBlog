@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages.Account
 {
@@ -15,7 +12,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<LogoutModel> logger;
 
-        public LogoutModel(ILogger<LogoutModel> logger, IDataContext dataContext) : base(dataContext)
+        public LogoutModel(ILogger<LogoutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }

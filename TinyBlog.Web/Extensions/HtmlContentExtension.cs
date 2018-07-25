@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.RegularExpressions;
-using TinyBlog.Domain;
+using TinyBlog.Web.ViewModels;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
     public static class HtmlHelperExtensions
     {
-        public static IHtmlContent ProcessHtml(this IHtmlHelper htmlHelper, Blog blog, string content)
+        public static IHtmlContent ProcessHtml(this IHtmlHelper htmlHelper, BlogViewModel blog, string content)
         {
             string result = content;
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using TinyBlog.Data;
+using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Web.Pages
 {
@@ -9,7 +8,7 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<ContactModel> logger;
 
-        public ContactModel(IDataContext dataContext, ILogger<ContactModel> logger) : base(dataContext)
+        public ContactModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<ContactModel> logger) : base(blogRepository, postRepository)
         {
             this.logger = logger;
         }
