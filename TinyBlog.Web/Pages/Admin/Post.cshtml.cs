@@ -56,7 +56,6 @@ namespace TinyBlog.Web.Pages.Admin
                 {
                     // Add
                     post.Id = Guid.NewGuid().ToString();
-                    post.PublishPost(post.PubDate);
                     postRepository.Add(post);
                     logger.LogInformation($"Post {Post.Title} was added on {DateTime.UtcNow}.");
                     return Redirect($"/Admin/Post/{post.Id}");

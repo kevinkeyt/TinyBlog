@@ -21,12 +21,5 @@ namespace TinyBlog.Core.Entities
         public bool IsPublished { get; set; }
         public List<string> PostCategories { get; set; } = new List<string>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
-
-        public void PublishPost(DateTime publishOn)
-        {
-            IsPublished = true;
-            PubDate = publishOn;
-            Events.Add(new PostPublishedEvent(this));
-        }
     }
 }

@@ -45,19 +45,15 @@
             <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('aboutdescription', 'save-content')" type="button">Save</button>
         </div>
         <div class="form-group">
-            <label for="address">Address</label>
-            <textarea class="form-control" placeholder="Address" asp-for="BlogInfo.Address" id="address"></textarea>
-            <span asp-validation-for="BlogInfo.Address" class="text-danger"></span>
+            <label for="contacttitle">Contact Title</label>
+            <input class="form-control" placeholder="Contact Title" asp-for="BlogInfo.ContactTitle" id="contacttitle" />
+            <span asp-validation-for="BlogInfo.ContactTitle" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="phone">Phone</label>
-            <input class="form-control" placeholder="Phone" asp-for="BlogInfo.Phone" id="phone" />
-            <span asp-validation-for="BlogInfo.Phone" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input class="form-control" placeholder="Email" asp-for="BlogInfo.Email" id="email" />
-            <span asp-validation-for="BlogInfo.Email" class="text-danger"></span>
+            <label for="contactdescription">Contact Description</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('contactdescription', 'save-contactdesc')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
+            <textarea class="form-control" placeholder="Contact Description" asp-for="BlogInfo.ContactDescription" id="contactdescription"></textarea>
+            <span asp-validation-for="BlogInfo.ContactDescription" class="text-danger"></span>
+            <button id="save-contactdesc" style="display:none;" class="btn btn-primary" onclick="saveContent('contactdescription', 'save-contactdesc')" type="button">Save</button>
         </div>
         <div class="form-group">
             <label for="cdnurl">CdnUrl</label>

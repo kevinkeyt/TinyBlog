@@ -1,15 +1,9 @@
 ﻿@page
 @model ContactModel
 @{
-    ViewData["Title"] = "Contact";
+    ViewData["Title"] = Model.Blog.ContactTitle;
 }
-<h2>@ViewData["Title"]</h2>
 
-<address>
-    @Html.ProcessHtml(Model.Blog, Model.Blog.Address)
-</address>
+<h3>@Model.Blog.ContactTitle</h3>
 
-<address>
-    <strong>Email:</strong> <a href="mailto:@Model.Blog.Email">@Model.Blog.Email</a><br />
-    <strong>Phone:</strong> <a href="tel:@Model.Blog.Phone">@Model.Blog.Phone</a>
-</address>
+<p>@Html.ProcessHtml(Model.Blog, Model.Blog.ContactDescription)</p>

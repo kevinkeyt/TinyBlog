@@ -17,9 +17,10 @@ namespace TinyBlog.Web.ViewModels
         public string AboutTitle { get; set; }
         [Required]
         public string AboutDescription { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
+        [Required]
+        public string ContactTitle { get; set; }
+        [Required]
+        public string ContactDescription { get; set; }
         public string CdnUrl { get; set; }
         public string Twitter { get; set; }
         public string TwitterName { get; set; }
@@ -38,9 +39,8 @@ namespace TinyBlog.Web.ViewModels
                 ShareImageUrl = entity.ShareUrl,
                 AboutTitle = entity.AboutTitle,
                 AboutDescription = entity.AboutDescription,
-                Address = entity.Address,
-                Phone = entity.Phone,
-                Email = entity.Email,
+                ContactTitle = entity.ContactTitle,
+                ContactDescription = entity.ContactDescription,
                 CdnUrl = entity.CdnUrl,
                 Twitter = entity.Twitter,
                 TwitterName = entity.TwitterName,
@@ -61,9 +61,8 @@ namespace TinyBlog.Web.ViewModels
                 ShareImageUrl = model.ShareUrl,
                 AboutTitle = model.AboutTitle,
                 AboutDescription = model.AboutDescription,
-                Address = model.Address,
-                Phone = model.Phone,
-                Email = model.Email,
+                ContactTitle = model.ContactTitle,
+                ContactDescription = model.ContactDescription,
                 CdnUrl = model.CdnUrl,
                 Twitter = model.Twitter,
                 TwitterName = model.TwitterName,

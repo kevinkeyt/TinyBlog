@@ -19,7 +19,7 @@ namespace TinyBlog.Web.ViewModels
         public string Excerpt { get; set; }
         [Required]
         public string Content { get; set; }
-        public DateTime PubDate { get; private set; }
+        public DateTime PubDate { get; set; }
         public DateTime LastModified { get; set; }
         public List<string> PostCategories { get; set; } = new List<string>();
 

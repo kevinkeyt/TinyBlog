@@ -11,9 +11,8 @@ namespace TinyBlog.Core.Entities
         public string ShareImageUrl { get; set; }
         public string AboutTitle { get; set; }
         public string AboutDescription { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
+        public string ContactTitle { get; set; }
+        public string ContactDescription { get; set; }
         public string CdnUrl { get; set; }
         public string Twitter { get; set; }
         public string TwitterName { get; set; }
