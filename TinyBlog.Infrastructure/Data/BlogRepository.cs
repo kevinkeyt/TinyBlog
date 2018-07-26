@@ -25,8 +25,12 @@ namespace TinyBlog.Infrastructure.Data
 
         public Blog GetBlogInfo()
         {
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
             var file = Path.Combine(folder, "BlogInfo.json");
-            Blog blogInfo = new Blog();
+            Blog blogInfo = InitBlogInfo();
             if (!File.Exists(file))
             {
                 var json = JsonConvert.SerializeObject(blogInfo);
@@ -48,6 +52,27 @@ namespace TinyBlog.Infrastructure.Data
             memoryCache.Remove("bloginfo");
             memoryCache.Set("bloginfo", blog, cacheOptions);
             File.WriteAllText(file, json);
+        }
+
+        private Blog InitBlogInfo()
+        {
+            return new Blog()
+            {
+                Name = "Tiny Blog",
+                Title = "Tiny Blog Engine",
+                Description = "A simple blogging engine for small to medium size blogs.",
+                ShareUrl = "https://www.myblog.com",
+                ShareImageUrl = "https://www.myblog.com",
+                AboutTitle = "About Joe Tester",
+                AboutDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+                ContactTitle = "Contact Me",
+                ContactDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+                Twitter = "https://twitter.com/joe",
+                TwitterName = "@joetester",
+                Facebook = "https://facebook.com/joe",
+                GitHub = "https://github.com/joe",
+                LinkedIn = "https://linkedin.com/joe"
+            };
         }
     }
 }

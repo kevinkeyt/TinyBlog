@@ -16,6 +16,7 @@ namespace TinyBlog.Web.ViewModels
         public string Author { get; set; }
         [Required]
         public string Slug { get; set; }
+        [Required]
         public string Excerpt { get; set; }
         [Required]
         public string Content { get; set; }

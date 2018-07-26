@@ -26,6 +26,10 @@ namespace TinyBlog.Infrastructure.Data
 
         public Post Add(Post entity)
         {
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
             var file = Path.Combine(folder, entity.Id + ".json");
             if (!File.Exists(file))
             {
