@@ -94,7 +94,13 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         function editContent(control, btn) {
-            $("#" + control).summernote({ focus: true });
+            $("#" + control).summernote({
+                focus: true, callbacks: {
+                    onImageUpload: function (files) {
+                        uploadImage(files[0], $(this));
+                    }
+                }
+            });
             $("#" + btn).show();
         }
 
@@ -103,5 +109,30 @@
             $('#' + control).val(html).summernote('destroy');
             $('#' + btn).hide();
         }
+
+        function uploadImage(image, editor) {
+            var formData = new FormData();
+            formData.append("file", image);
+
+            $.ajax({
+                url: "/Admin/Blog?handler=UploadImage",
+                data: formData,
+                type: 'POST',
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (!data) {
+                        alert('Could not upload image!');
+                        return;
+                    }
+                    editor.summernote('insertImage', data.url);
+                },
+                error: function () {
+                    alert('Could not upload image!');
+                }
+            });
+        };
     </script>
 }

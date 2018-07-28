@@ -16,12 +16,12 @@ namespace TinyBlog.Web.Pages.Admin
         [BindProperty]
         public PostViewModel Post { get; set; }
 
-        private IHostingEnvironment Environment { get; set; }
+        private IHostingEnvironment environment { get; set; }
         private readonly ILogger<PostModel> logger;
 
         public PostModel(IHostingEnvironment environment, IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PostModel> logger) : base(blogRepository, postRepository)
         {
-            this.Environment = environment;
+            this.environment = environment;
             this.logger = logger;
         }
 
@@ -73,7 +73,7 @@ namespace TinyBlog.Web.Pages.Admin
 
         public async Task<IActionResult> OnPostUploadImage(IFormFile file)
         {
-            var folder = Environment.WebRootPath + "\\images\\";
+            var folder = environment.WebRootPath + "\\images\\";
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
 
