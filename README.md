@@ -15,9 +15,7 @@ For more info on this process checkout the MS docs: https://docs.microsoft.com/e
 
 Here's an example using dotnet user secrets.
 ```json
-{
-  "dotnet usersecrets set AppSettings:LoginEmail": "joe@tesing.com",
-  "dotnet usersecrets set AppSettings:LoginPassword": "Passw0rd",
-  "dotnet usersecrets set AppSettings:FullName": "Joe Tester"
-}
+  dotnet users-ecrets set AppSettings:LoginEmail "joe@tesing.com"
+  dotnet user-secrets set AppSettings:LoginPassword "Passw0rd"
+  dotnet user-secrets set AppSettings:FullName "Joe Tester"
 ```
