@@ -9,5 +9,12 @@
     <h2 class="blog-post-title">@Model.Post.Title</h2>
     <p class="blog-post-meta"><i class="glyphicon glyphicon-calendar"></i>&nbsp;@Model.Post.PubDate.ToString("MMMM dd, yyyy") by <a href="/">@Model.Post.Author</a></p>
     @Html.ProcessHtml(Model.Blog, Model.Post.Content)
-    <p class="blog-post-meta"><i class="glyphicon glyphicon-tag"></i>&nbsp;@string.Join(",", Model.Post.PostCategories)</p>
+    <p class="blog-post-meta">
+        <i class="glyphicon glyphicon-tag"></i>&nbsp
+        @foreach (var c in Model.Categories)
+        {
+            <a href="/Index?c=@Uri.EscapeDataString(c.Key)">@c.Key</a>
+            @:&nbsp;
+        }
+    </p>
 </div> 

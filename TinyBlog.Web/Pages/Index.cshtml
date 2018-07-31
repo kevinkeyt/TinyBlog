@@ -18,7 +18,14 @@
             {
                 <a href="/admin/post/@Post.Id" class="btn btn-primary">Edit Post</a><br /><br />
             }
-            <p class="blog-post-meta"><i class="glyphicon glyphicon-tag"></i>&nbsp;@string.Join(",", Post.PostCategories)</p>
+            <p class="blog-post-meta">
+                <i class="glyphicon glyphicon-tag"></i>&nbsp;
+                @foreach (var c in Post.PostCategories)
+                {
+                    <a href="/Index?c=@Uri.EscapeDataString(c)">@c</a>
+                    @:&nbsp;
+                }
+            </p>
         </div>
     </div>
 }
