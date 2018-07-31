@@ -171,6 +171,11 @@ h6, .h6 {
     border-top: 1px solid #e5e5e5;
 }
 
-    .blog-footer p:last-child {
-        margin-bottom: 0;
-    }
+.blog-footer p:last-child {
+    margin-bottom: 0;
+}
+
+.glyph-button {
+    font-size: 10pt;
+    cursor: pointer;
+}
