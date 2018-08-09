@@ -67,9 +67,12 @@ namespace TinyBlog.Infrastructure.Data
                 .ToDictionary(x => x.Category, x => x.Count);
         }
 
-        public Post GetPostBySlug(string Slug)
+        public Post GetPostBySlug(string slug, bool authenticated = false)
         {
-            return GetPublicPosts().SingleOrDefault(x => x.Slug == Slug);
+            if (authenticated)
+                return ListAll().SingleOrDefault(x => x.Slug == slug);
+            else
+                return GetPublicPosts().SingleOrDefault(x => x.Slug == slug);
         }
 
         public IEnumerable<Post> GetPostsByCategory(string category)

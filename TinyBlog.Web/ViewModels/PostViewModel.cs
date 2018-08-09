@@ -24,37 +24,37 @@ namespace TinyBlog.Web.ViewModels
         public DateTime LastModified { get; set; }
         public List<string> PostCategories { get; set; } = new List<string>();
 
-        public static PostViewModel FromPostEntity(Post entity)
-        {
-            return new PostViewModel()
-            {
-                Id = entity.Id,
-                Title = entity.Title,
-                Author = entity.Author,
-                Slug = entity.Slug,
-                Excerpt = entity.Excerpt,
-                Content = entity.Content,
-                PubDate = entity.PubDate,
-                LastModified = entity.LastModified,
-                PostCategories = entity.PostCategories
-            };
-        }
+        //public static PostViewModel FromPostEntity(Post entity)
+        //{
+        //    return new PostViewModel()
+        //    {
+        //        Id = entity.Id,
+        //        Title = entity.Title,
+        //        Author = entity.Author,
+        //        Slug = entity.Slug,
+        //        Excerpt = entity.Excerpt,
+        //        Content = entity.Content,
+        //        PubDate = entity.PubDate,
+        //        LastModified = entity.LastModified,
+        //        PostCategories = entity.PostCategories
+        //    };
+        //}
 
-        public static Post ToPostEntity(PostViewModel model)
-        {
-            return new Post()
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Author = model.Author,
-                Slug = model.Slug,
-                Excerpt = model.Excerpt,
-                Content = model.Content,
-                PubDate = model.PubDate,
-                LastModified = model.LastModified,
-                IsPublished = model.PubDate <= DateTime.UtcNow,
-                PostCategories = model.PostCategories
-            };
-        }
+        //public static Post ToPostEntity(PostViewModel model)
+        //{
+        //    return new Post()
+        //    {
+        //        Id = model.Id,
+        //        Title = model.Title,
+        //        Author = model.Author,
+        //        Slug = model.Slug,
+        //        Excerpt = model.Excerpt,
+        //        Content = model.Content,
+        //        PubDate = model.PubDate,
+        //        LastModified = model.LastModified,
+        //        IsPublished = model.PubDate <= DateTime.UtcNow,
+        //        PostCategories = model.PostCategories
+        //    };
+        //}
     }
 }

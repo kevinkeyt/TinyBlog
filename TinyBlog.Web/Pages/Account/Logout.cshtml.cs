@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<LogoutModel> logger;
 
-        public LogoutModel(ILogger<LogoutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
+        public LogoutModel(ILogger<LogoutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }

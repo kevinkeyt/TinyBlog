@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Interfaces;
 
@@ -8,7 +9,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<SignedOutModel> logger;
 
-        public SignedOutModel(ILogger<SignedOutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
+        public SignedOutModel(ILogger<SignedOutModel> logger, IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }

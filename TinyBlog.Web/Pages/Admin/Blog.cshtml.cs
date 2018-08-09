@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Web.ViewModels;
 
@@ -17,7 +19,12 @@ namespace TinyBlog.Web.Pages.Admin
 
         private readonly ILogger<BlogModel> logger;
         private IHostingEnvironment environment { get; set; }
-        public BlogModel(IHostingEnvironment environment, IBlogRepository blogRepository, IPostRepository postRepository, ILogger<BlogModel> logger) : base(blogRepository, postRepository)
+
+        public BlogModel(IHostingEnvironment environment, 
+            IBlogRepository blogRepository, 
+            IPostRepository postRepository, 
+            ILogger<BlogModel> logger,
+            IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.environment = environment;
             this.logger = logger;
@@ -34,7 +41,7 @@ namespace TinyBlog.Web.Pages.Admin
             Blog = BlogInfo;
             if (ModelState.IsValid)
             {
-                blogRepository.SaveBlogInfo(BlogViewModel.ToBlogEntity(BlogInfo));
+                blogRepository.SaveBlogInfo(mapper.Map<Blog>(BlogInfo));
                 logger.LogInformation($"Blog info was updated on {DateTime.UtcNow}");
             }
             return Page();

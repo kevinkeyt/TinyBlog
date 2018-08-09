@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Interfaces;
 
@@ -8,7 +9,7 @@ namespace TinyBlog.Web.Pages.Account
     {
         private readonly ILogger<AccessDeniedModel> logger;
 
-        public AccessDeniedModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<AccessDeniedModel> logger) : base(blogRepository, postRepository)
+        public AccessDeniedModel(IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper, ILogger<AccessDeniedModel> logger) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }

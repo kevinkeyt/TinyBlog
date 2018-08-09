@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Web.ViewModels;
@@ -8,8 +9,7 @@ namespace TinyBlog.Web.Pages
     public class PostModel : BasePageModel
     {
         private readonly ILogger<PostModel> logger;
-
-        public PostModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PostModel> logger) : base(blogRepository, postRepository)
+        public PostModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PostModel> logger, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }
@@ -20,7 +20,7 @@ namespace TinyBlog.Web.Pages
         public IActionResult OnGetAsync(string slug)
         {
             Slug = slug;
-            Post = PostViewModel.FromPostEntity(postRepository.GetPostBySlug(slug));
+            Post = mapper.Map<PostViewModel>(postRepository.GetPostBySlug(slug, HttpContext.User.Identity.IsAuthenticated));
             // If post is null it should redirect to 404
             if(Post == null)
             {

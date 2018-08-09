@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Interfaces;
 
@@ -8,7 +9,7 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<AboutModel> logger;
 
-        public AboutModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<AboutModel> logger) : base(blogRepository, postRepository)
+        public AboutModel(IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper, ILogger<AboutModel> logger) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Infrastructure.Data;
+using TinyBlog.Web.Extensions;
 
 namespace TinyBlog.Web
 {
@@ -42,6 +44,8 @@ namespace TinyBlog.Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+            services.AddAutoMapper(x => x.AddProfile(new MappingEntity()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

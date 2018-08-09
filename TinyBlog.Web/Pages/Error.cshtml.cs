@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Interfaces;
@@ -9,7 +10,7 @@ namespace TinyBlog.Web.Pages
     {
         private readonly ILogger<ErrorModel> logger;
 
-        public ErrorModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<ErrorModel> logger) : base(blogRepository, postRepository)
+        public ErrorModel(IBlogRepository blogRepository, IPostRepository postRepository, ILogger<ErrorModel> logger, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
         }

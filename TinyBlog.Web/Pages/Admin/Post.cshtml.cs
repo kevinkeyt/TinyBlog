@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Web.ViewModels;
 
@@ -18,8 +20,10 @@ namespace TinyBlog.Web.Pages.Admin
 
         private IHostingEnvironment environment { get; set; }
         private readonly ILogger<PostModel> logger;
-
-        public PostModel(IHostingEnvironment environment, IBlogRepository blogRepository, IPostRepository postRepository, ILogger<PostModel> logger) : base(blogRepository, postRepository)
+        public PostModel(IHostingEnvironment environment, 
+            IBlogRepository blogRepository, 
+            IPostRepository postRepository, 
+            ILogger<PostModel> logger, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.environment = environment;
             this.logger = logger;
@@ -36,7 +40,7 @@ namespace TinyBlog.Web.Pages.Admin
             }
             else
             {
-                Post = PostViewModel.FromPostEntity(postRepository.GetById(id));
+                Post = mapper.Map<PostViewModel>(postRepository.GetById(id));
             }
             if(Post == null)
             {
@@ -51,7 +55,8 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if(ModelState.IsValid)
             {
-                var post = PostViewModel.ToPostEntity(Post);
+                var post = mapper.Map<Post>(Post);
+                post.IsPublished = post.PubDate <= DateTime.UtcNow;
                 if (string.IsNullOrEmpty(Post.Id))
                 {
                     // Add
@@ -66,7 +71,7 @@ namespace TinyBlog.Web.Pages.Admin
                     logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
                 }
             }
-            Blog = BlogViewModel.FromBlogEntity(blogRepository.GetBlogInfo());
+            Blog = mapper.Map<BlogViewModel>(blogRepository.GetBlogInfo());
             Categories = postRepository.GetCategories();
             return Page();
         }

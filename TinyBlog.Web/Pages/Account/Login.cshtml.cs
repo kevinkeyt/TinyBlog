@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace TinyBlog.Web.Pages.Account
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IBlogRepository blogRepository, IPostRepository postRepository) : base(blogRepository, postRepository)
+        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper) : base(blogRepository, postRepository, mapper)
         {
             this.logger = logger;
             this.configuration = configuration;
