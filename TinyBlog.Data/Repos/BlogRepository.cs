@@ -6,7 +6,7 @@ using System.IO;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 
-namespace TinyBlog.Infrastructure.Data
+namespace TinyBlog.Data.Repos
 {
     public class BlogRepository : IBlogRepository
     {

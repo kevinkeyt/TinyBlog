@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TinyBlog.Infrastructure\TinyBlog.Infrastructure.csproj" />
+    <ProjectReference Include="..\TinyBlog.Data\TinyBlog.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

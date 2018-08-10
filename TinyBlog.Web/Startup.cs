@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyBlog.Core.Interfaces;
-using TinyBlog.Infrastructure.Data;
+using TinyBlog.Data.Repos;
 using TinyBlog.Web.Extensions;
 
 namespace TinyBlog.Web
