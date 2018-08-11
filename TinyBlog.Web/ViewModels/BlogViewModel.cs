@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TinyBlog.Core.Entities;
 
 namespace TinyBlog.Web.ViewModels
 {
@@ -27,49 +26,5 @@ namespace TinyBlog.Web.ViewModels
         public string Facebook { get; set; }
         public string GitHub { get; set; }
         public string LinkedIn { get; set; }
-
-        //public static BlogViewModel FromBlogEntity(Blog entity)
-        //{
-        //    return new BlogViewModel()
-        //    {
-        //        Name = entity.Name,
-        //        Title = entity.Title,
-        //        Description = entity.Description,
-        //        ShareUrl = entity.ShareUrl,
-        //        ShareImageUrl = entity.ShareImageUrl,
-        //        AboutTitle = entity.AboutTitle,
-        //        AboutDescription = entity.AboutDescription,
-        //        ContactTitle = entity.ContactTitle,
-        //        ContactDescription = entity.ContactDescription,
-        //        CdnUrl = entity.CdnUrl,
-        //        Twitter = entity.Twitter,
-        //        TwitterName = entity.TwitterName,
-        //        Facebook = entity.Facebook,
-        //        GitHub = entity.GitHub,
-        //        LinkedIn = entity.LinkedIn
-        //    };
-        //}
-
-        //public static Blog ToBlogEntity(BlogViewModel model)
-        //{
-        //    return new Blog()
-        //    {
-        //        Name = model.Name,
-        //        Title = model.Title,
-        //        Description = model.Description,
-        //        ShareUrl = model.ShareUrl,
-        //        ShareImageUrl = model.ShareImageUrl,
-        //        AboutTitle = model.AboutTitle,
-        //        AboutDescription = model.AboutDescription,
-        //        ContactTitle = model.ContactTitle,
-        //        ContactDescription = model.ContactDescription,
-        //        CdnUrl = model.CdnUrl,
-        //        Twitter = model.Twitter,
-        //        TwitterName = model.TwitterName,
-        //        Facebook = model.Facebook,
-        //        GitHub = model.GitHub,
-        //        LinkedIn = model.LinkedIn
-        //    };
-        //}
     }
 }

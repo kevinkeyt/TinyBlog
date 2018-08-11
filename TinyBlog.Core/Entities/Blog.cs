@@ -1,9 +1,20 @@
-﻿using TinyBlog.Core.SharedKernel;
+﻿using System;
+using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Core.Entities
 {
     public class Blog : BaseEntity
     {
+        public Blog(string name, string title) : this()
+        {
+            Id = Guid.NewGuid().ToString();
+            Name = name;
+            Title = title;
+        }
+
+        private Blog()
+        {}
+
         public string Name { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

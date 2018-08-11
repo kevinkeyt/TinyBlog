@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.Interfaces;
 
 namespace TinyBlog.Web.Pages.Account
 {
@@ -19,7 +20,7 @@ namespace TinyBlog.Web.Pages.Account
         private readonly ILogger<LoginModel> logger;
         private readonly IConfiguration configuration;
 
-        public LoginModel(ILogger<LoginModel> logger, IConfiguration configuration, IBlogRepository blogRepository, IPostRepository postRepository, IMapper mapper) : base(blogRepository, postRepository, mapper)
+        public LoginModel(IBlogService blogService, IPostService postService, ILogger<LoginModel> logger, IConfiguration configuration) : base(blogService, postService)
         {
             this.logger = logger;
             this.configuration = configuration;

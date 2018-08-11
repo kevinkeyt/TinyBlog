@@ -1,14 +1,25 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using TinyBlog.Core.Events;
+using System.Linq;
 using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Core.Entities
 {
     public class Post : BaseEntity
     {
-        public Post()
+        public Post(string title, string author, string slug) : this()
+        {           
+            Title = title;
+            Author = author;
+            Slug = slug;
+        }
+
+        private Post()
         {
+            Id = Guid.NewGuid().ToString();
+            LastModified = DateTime.UtcNow;
+            PostCategories = new List<string>();
         }
 
         public string Title { get; set; }
@@ -16,10 +27,46 @@ namespace TinyBlog.Core.Entities
         public string Slug { get; set; }
         public string Excerpt { get; set; }
         public string Content { get; set; }
-        public DateTime PubDate { get; set; }
+        [JsonProperty]
+        public DateTime PubDate { get; private set; }
         public DateTime LastModified { get; set; }
-        public bool IsPublished { get; set; }
-        public List<string> PostCategories { get; set; } = new List<string>();
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        [JsonProperty]
+        public bool IsPublished { get; private set; }
+        [JsonProperty]
+        public List<string> PostCategories { get; private set; }
+
+        public void SetPubDate(DateTime pubDate)
+        {
+            PubDate = pubDate;
+            IsPublished = pubDate <= DateTime.UtcNow;
+        }
+
+        public (bool, string)AddCategory(string category)
+        {
+            if(PostCategories != null)
+            {
+                if(!PostCategories.Any(x => x == category))
+                {
+                    PostCategories.Add(category);
+                    return (true, "Success");
+                }
+                return (false, "Already exists");
+            }
+            return (false, "Array is null");
+        }
+
+        public (bool, string) RemoveCategory(string category)
+        {
+            if (PostCategories != null)
+            {
+                if (PostCategories.Any(x => x == category))
+                {
+                    PostCategories.Remove(category);
+                    return (true, "Success");
+                }
+                return (false, "Does not exist");
+            }
+            return (false, "Array is null");
+        }
     }
 }

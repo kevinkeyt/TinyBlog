@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages.Admin
@@ -21,10 +22,10 @@ namespace TinyBlog.Web.Pages.Admin
         private IHostingEnvironment environment { get; set; }
 
         public BlogModel(IHostingEnvironment environment, 
-            IBlogRepository blogRepository, 
-            IPostRepository postRepository, 
+            IBlogService blogService, 
+            IPostService postService, 
             ILogger<BlogModel> logger,
-            IMapper mapper) : base(blogRepository, postRepository, mapper)
+            IMapper mapper) : base(blogService, postService)
         {
             this.environment = environment;
             this.logger = logger;
@@ -41,7 +42,7 @@ namespace TinyBlog.Web.Pages.Admin
             Blog = BlogInfo;
             if (ModelState.IsValid)
             {
-                blogRepository.SaveBlogInfo(mapper.Map<Blog>(BlogInfo));
+                blogService.SaveBlogInfo(BlogInfo);
                 logger.LogInformation($"Blog info was updated on {DateTime.UtcNow}");
             }
             return Page();

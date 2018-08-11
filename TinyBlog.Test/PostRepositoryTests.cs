@@ -13,6 +13,11 @@ namespace TinyBlog.Test
     {
         private readonly Mock<IPostRepository> moqRepo;
 
+        private static Post CreatePost()
+        {
+            return new Post("Test Post", "Kevin", "test-post");
+        }
+
         public PostRepositoryTests()
         {
             moqRepo = new Mock<IPostRepository>();
@@ -23,8 +28,7 @@ namespace TinyBlog.Test
         {
             moqRepo.Setup(x => x.GetPublicPosts()).Returns(new List<Post>
             {
-                new Post() { Id = Guid.NewGuid().ToString() },
-                new Post() { Id = Guid.NewGuid().ToString() }
+                CreatePost()
             });
             var posts = moqRepo.Object.GetPublicPosts();
             Assert.True(posts.Count() > 0);

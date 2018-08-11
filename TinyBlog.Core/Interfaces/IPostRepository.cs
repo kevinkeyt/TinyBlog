@@ -9,5 +9,6 @@ namespace TinyBlog.Core.Interfaces
         IEnumerable<Post> GetPostsByCategory(string category);
         Post GetPostBySlug(string slug, bool authenticated = false);
         Dictionary<string, int> GetCategories();
+
     }
 }

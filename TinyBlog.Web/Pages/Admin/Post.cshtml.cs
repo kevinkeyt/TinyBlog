@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,8 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TinyBlog.Core.Entities;
-using TinyBlog.Core.Interfaces;
+using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Pages.Admin
@@ -21,9 +19,9 @@ namespace TinyBlog.Web.Pages.Admin
         private IHostingEnvironment environment { get; set; }
         private readonly ILogger<PostModel> logger;
         public PostModel(IHostingEnvironment environment, 
-            IBlogRepository blogRepository, 
-            IPostRepository postRepository, 
-            ILogger<PostModel> logger, IMapper mapper) : base(blogRepository, postRepository, mapper)
+            IBlogService blogService, 
+            IPostService postService, 
+            ILogger<PostModel> logger) : base(blogService, postService)
         {
             this.environment = environment;
             this.logger = logger;
@@ -40,7 +38,7 @@ namespace TinyBlog.Web.Pages.Admin
             }
             else
             {
-                Post = mapper.Map<PostViewModel>(postRepository.GetById(id));
+                Post = postService.GetById(id);
             }
             if(Post == null)
             {
@@ -55,24 +53,21 @@ namespace TinyBlog.Web.Pages.Admin
         {
             if(ModelState.IsValid)
             {
-                var post = mapper.Map<Post>(Post);
-                post.IsPublished = post.PubDate <= DateTime.UtcNow;
                 if (string.IsNullOrEmpty(Post.Id))
                 {
                     // Add
-                    post.Id = Guid.NewGuid().ToString();
-                    postRepository.Add(post);
+                    Post = postService.Add(Post);
                     logger.LogInformation($"Post {Post.Title} was added on {DateTime.UtcNow}.");
-                    return Redirect($"/Admin/Post/{post.Id}");
+                    return Redirect($"/Admin/Post/{Post.Id}");
                 }
                 else
                 {
-                    postRepository.Update(post);
+                    postService.Update(Post);
                     logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
                 }
             }
-            Blog = mapper.Map<BlogViewModel>(blogRepository.GetBlogInfo());
-            Categories = postRepository.GetCategories();
+            Blog = blogService.GetBlogInfo();
+            Categories = postService.GetCategories();
             return Page();
         }
 

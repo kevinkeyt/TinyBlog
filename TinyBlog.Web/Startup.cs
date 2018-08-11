@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Data.Repos;
 using TinyBlog.Web.Extensions;
+using TinyBlog.Web.Interfaces;
+using TinyBlog.Web.Services;
 
 namespace TinyBlog.Web
 {
@@ -33,6 +35,9 @@ namespace TinyBlog.Web
 
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();

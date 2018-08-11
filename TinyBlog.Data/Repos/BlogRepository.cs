@@ -56,10 +56,8 @@ namespace TinyBlog.Data.Repos
 
         private Blog InitBlogInfo()
         {
-            return new Blog()
+            return new Blog("Tiny Blog", "Tiny Blog Engine")
             {
-                Name = "Tiny Blog",
-                Title = "Tiny Blog Engine",
                 Description = "A simple blogging engine for small to medium size blogs.",
                 ShareUrl = "https://www.myblog.com",
                 ShareImageUrl = "https://www.myblog.com",
