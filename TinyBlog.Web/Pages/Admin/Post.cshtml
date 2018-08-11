@@ -29,13 +29,13 @@
                 <span asp-validation-for="Post.Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="excerpt">Excerpt</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Excerpt', 'save-excerpt')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
+                <label for="excerpt">Excerpt</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Excerpt', 'save-excerpt')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
                 <textarea class="form-control" placeholder="excerpt" asp-for="Post.Excerpt" id="Excerpt"></textarea>
                 <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
                 <button id="save-excerpt" style="display:none;" class="btn btn-primary" onclick="saveContent('Excerpt', 'save-excerpt')" type="button">Save</button>
             </div>
             <div class="form-group">
-                <label for="content">Content</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Content', 'save-content')"><span style="font-size:10pt;" class="glyphicon glyphicon-edit"></span></a>
+                <label for="content">Content</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Content', 'save-content')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
                 <textarea class="form-control" placeholder="content" asp-for="Post.Content" id="Content"></textarea>
                 <span asp-validation-for="Post.Content" class="text-danger"></span>
                 <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('Content', 'save-content')" type="button">Save</button>
@@ -72,11 +72,13 @@
         {
             @:categories.push("@c");
         }
+
         $(document).ready(function () {
             for (var i = 0; i < categories.length; i++) {
                 addCategoryToDOM(i, categories[i]);
             }
         });
+
         function addCategory() {
             var category = $('#newcategory').val();
             var exists = categories.filter(x => x.toLowerCase() === category.toLowerCase())[0];
@@ -90,7 +92,14 @@
         }
 
         function addCategoryToDOM(index, category) {
-            $('#categories').append('<li><input type="hidden" id="Post_PostCategories_' + index + '_" name="Post.PostCategories[' + index + ']" value="' + category + '" /><label>' + category + '</label></li>');
+            $('#categories').append('<li id="cat_' + index + '"><input type="hidden" id="Post_PostCategories_' + index + '_" name="Post.PostCategories[' + index + ']" value="' + category + '" /><label>' + category + '</label>&nbsp;<span onclick="deleteCategory(' + index + ')" class="glyphicon glyphicon-trash glyph-button"></span></li>');
+        }
+
+        function deleteCategory(index) {
+            if (index > -1) {
+                $("#cat_" + index).remove();
+                categories.splice(index, 1);
+            }
         }
 
         function editContent(control, btn) {
