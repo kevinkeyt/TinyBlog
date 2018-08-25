@@ -1,4 +1,6 @@
 using AutoMapper;
+using Markdig;
+using Markdig.Extensions.AutoIdentifiers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using TinyBlog.Data.Repos;
 using TinyBlog.Web.Extensions;
 using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.Services;
+using Westwind.AspNetCore.Markdown;
 
 namespace TinyBlog.Web
 {
@@ -51,6 +54,28 @@ namespace TinyBlog.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             services.AddAutoMapper(x => x.AddProfile(new MappingEntity()));
+
+            services.AddMarkdown(config =>
+            {
+                // Create custom MarkdigPipeline 
+                // using MarkDig; for extension methods
+                config.ConfigureMarkdigPipeline = builder =>
+                {
+                    builder.UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions.Default)
+                        .UsePipeTables()
+                        .UseGridTables()
+                        .UseAutoIdentifiers(AutoIdentifierOptions.GitHub) // Headers get id="name" 
+                        .UseAutoLinks() // URLs are parsed into anchors
+                        .UseAbbreviations()
+                        .UseYamlFrontMatter()
+                        .UseEmojiAndSmiley(true)
+                        .UseListExtras()
+                        .UseFigures()
+                        .UseTaskLists()
+                        .UseCustomContainers()
+                        .UseGenericAttributes();
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,8 +9,10 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
+    <PackageReference Include="Markdig" Version="0.15.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" />
+    <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.29" />
   </ItemGroup>
 
   <ItemGroup>
