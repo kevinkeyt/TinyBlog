@@ -39,10 +39,9 @@
             <span asp-validation-for="BlogInfo.AboutTitle" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="aboutdescription">About Description</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('aboutdescription', 'save-content')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
+            <label for="aboutdescription">About Description</label>
             <textarea class="form-control" placeholder="About Description" asp-for="BlogInfo.AboutDescription" id="aboutdescription"></textarea>
             <span asp-validation-for="BlogInfo.AboutDescription" class="text-danger"></span>
-            <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('aboutdescription', 'save-content')" type="button">Save</button>
         </div>
         <div class="form-group">
             <label for="contacttitle">Contact Title</label>
@@ -50,10 +49,9 @@
             <span asp-validation-for="BlogInfo.ContactTitle" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="contactdescription">Contact Description</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('contactdescription', 'save-contactdesc')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
+            <label for="contactdescription">Contact Description</label>
             <textarea class="form-control" placeholder="Contact Description" asp-for="BlogInfo.ContactDescription" id="contactdescription"></textarea>
             <span asp-validation-for="BlogInfo.ContactDescription" class="text-danger"></span>
-            <button id="save-contactdesc" style="display:none;" class="btn btn-primary" onclick="saveContent('contactdescription', 'save-contactdesc')" type="button">Save</button>
         </div>
         <div class="form-group">
             <label for="cdnurl">CdnUrl</label>
@@ -92,47 +90,4 @@
 @section Scripts
     {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        function editContent(control, btn) {
-            $("#" + control).summernote({
-                focus: true, callbacks: {
-                    onImageUpload: function (files) {
-                        uploadImage(files[0], $(this));
-                    }
-                }
-            });
-            $("#" + btn).show();
-        }
-
-        function saveContent(control, btn) {
-            var html = $('#' + control).summernote('code');
-            $('#' + control).val(html).summernote('destroy');
-            $('#' + btn).hide();
-        }
-
-        function uploadImage(image, editor) {
-            var formData = new FormData();
-            formData.append("file", image);
-
-            $.ajax({
-                url: "/Admin/Blog?handler=UploadImage",
-                data: formData,
-                type: 'POST',
-                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (!data) {
-                        alert('Could not upload image!');
-                        return;
-                    }
-                    editor.summernote('insertImage', data.url);
-                },
-                error: function () {
-                    alert('Could not upload image!');
-                }
-            });
-        };
-    </script>
 }

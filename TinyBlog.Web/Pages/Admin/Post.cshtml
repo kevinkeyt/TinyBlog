@@ -29,16 +29,14 @@
                 <span asp-validation-for="Post.Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="excerpt">Excerpt</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Excerpt', 'save-excerpt')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
+                <label for="excerpt">Excerpt</label>
                 <textarea class="form-control" placeholder="excerpt" asp-for="Post.Excerpt" id="Excerpt"></textarea>
                 <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
-                <button id="save-excerpt" style="display:none;" class="btn btn-primary" onclick="saveContent('Excerpt', 'save-excerpt')" type="button">Save</button>
             </div>
             <div class="form-group">
-                <label for="content">Content</label>&nbsp;<a href="javascript:void(0);" onclick="editContent('Content', 'save-content')"><span class="glyphicon glyphicon-edit glyph-button"></span></a>
+                <label for="content">Content</label>
                 <textarea class="form-control" placeholder="content" asp-for="Post.Content" id="Content"></textarea>
                 <span asp-validation-for="Post.Content" class="text-danger"></span>
-                <button id="save-content" style="display:none;" class="btn btn-primary" onclick="saveContent('Content', 'save-content')" type="button">Save</button>
             </div>
             <div class="form-group">
                 <label for="pubdate">Publish Date</label>
@@ -101,46 +99,5 @@
                 categories.splice(index, 1);
             }
         }
-
-        function editContent(control, btn) {
-            $("#" + control).summernote({
-                focus: true, callbacks: {
-                    onImageUpload: function (files) {
-                        uploadImage(files[0], $(this));
-                    }
-                }});
-            $("#" + btn).show();
-        }
-
-        function saveContent(control, btn) {
-            var html = $('#' + control).summernote('code');
-            $('#' + control).val(html).summernote('destroy');
-            $('#' + btn).hide();
-        }
-
-        function uploadImage(image, editor) {
-            var formData = new FormData();
-            formData.append("file", image);
-
-            $.ajax({
-                url: "/Admin/Post?handler=UploadImage",
-                data: formData,
-                type: 'POST',
-                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (!data) {
-                        alert('Could not upload image!');
-                        return;
-                    }
-                    editor.summernote('insertImage', data.url);
-                },
-                error: function () {
-                    alert('Could not upload image!');
-                }
-            });
-        };
     </script>
 }
