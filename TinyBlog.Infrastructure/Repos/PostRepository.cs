@@ -8,19 +8,21 @@ using System.Linq;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 
-namespace TinyBlog.Data.Repos
+namespace TinyBlog.Infrastructure.Repos
 {
     public class PostRepository : IPostRepository
     {
         private readonly IHostingEnvironment environment;
+        private readonly IDomainEventDispatcher dispatcher;
         private readonly IMemoryCache memoryCache;
         private readonly MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(24));
         private readonly string folder;
 
-        public PostRepository(IHostingEnvironment environment, IMemoryCache memoryCache)
+        public PostRepository(IHostingEnvironment environment, IMemoryCache memoryCache, IDomainEventDispatcher dispatcher)
         {
             this.environment = environment;
             this.memoryCache = memoryCache;
+            this.dispatcher = dispatcher;
             folder = environment.ContentRootPath + "\\Data\\Posts\\";
         }
 
@@ -41,6 +43,12 @@ namespace TinyBlog.Data.Repos
                 memoryCache.Remove("posts");
                 memoryCache.Set("posts", posts, cacheOptions);
                 File.WriteAllText(file, json);
+
+                // Update Domain Events
+                var events = entity.Events.ToArray();
+                entity.Events.Clear();
+                foreach (var domainEvent in events)
+                    dispatcher.Dispatch(domainEvent);
             }
             return entity;
         }
@@ -128,6 +136,12 @@ namespace TinyBlog.Data.Repos
                 memoryCache.Remove("posts");
                 memoryCache.Set("posts", posts, cacheOptions);
                 File.WriteAllText(file, json);
+
+                // Update Domain Events
+                var events = entity.Events.ToArray();
+                entity.Events.Clear();
+                foreach (var domainEvent in events)
+                    dispatcher.Dispatch(domainEvent);
             }
         }
     }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="BundlerMinifier.Core" Version="2.8.391" />
@@ -20,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TinyBlog.Data\TinyBlog.Data.csproj" />
+    <ProjectReference Include="..\TinyBlog.Core\TinyBlog.Core.csproj" />
+    <ProjectReference Include="..\TinyBlog.Infrastructure\TinyBlog.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Markdig;
 using Markdig.Extensions.AutoIdentifiers;
@@ -8,8 +10,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using System.Reflection;
 using TinyBlog.Core.Interfaces;
-using TinyBlog.Data.Repos;
+using TinyBlog.Infrastructure.Repos;
+using TinyBlog.Infrastructure.DomainEvents;
 using TinyBlog.Web.Extensions;
 using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.Services;
@@ -27,7 +33,7 @@ namespace TinyBlog.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -41,6 +47,7 @@ namespace TinyBlog.Web
 
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPostService, PostService>();
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();
@@ -59,9 +66,9 @@ namespace TinyBlog.Web
             {
                 // Create custom MarkdigPipeline 
                 // using MarkDig; for extension methods
-                config.ConfigureMarkdigPipeline = builder =>
+                config.ConfigureMarkdigPipeline = b =>
                 {
-                    builder.UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions.Default)
+                    b.UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions.Default)
                         .UsePipeTables()
                         .UseGridTables()
                         .UseAutoIdentifiers(AutoIdentifierOptions.GitHub) // Headers get id="name" 
@@ -76,6 +83,20 @@ namespace TinyBlog.Web
                         .UseGenericAttributes();
                 };
             });
+
+            // Configure Autofac
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+
+            // Configure Domain Events
+            builder.RegisterType<DomainEventDispatcher>().As<IDomainEventDispatcher>().InstancePerLifetimeScope();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => t.GetInterfaces().Any(i => i.IsClosedTypeOf(typeof(IHandle<>))))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            var container = builder.Build();
+            return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

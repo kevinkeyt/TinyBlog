@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TinyBlog.Core.Entities;
+﻿using TinyBlog.Core.Entities;
 using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Core.Events

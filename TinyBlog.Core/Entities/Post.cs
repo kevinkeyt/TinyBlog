@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TinyBlog.Core.Events;
 using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Core.Entities
@@ -39,6 +40,8 @@ namespace TinyBlog.Core.Entities
         {
             PubDate = pubDate;
             IsPublished = pubDate <= DateTime.UtcNow;
+            if(IsPublished)
+                Events.Add(new PostPublishedEvent(this));
         }
 
         public (bool, string)AddCategory(string category)

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Core", "TinyBlog.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Test", "TinyBlog.Test\TinyBlog.Test.csproj", "{AFECF559-A8F7-4B0A-95C7-D8A2BA61C89B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Data", "TinyBlog.Data\TinyBlog.Data.csproj", "{093240C5-B8BD-4180-AF52-3F4A3B25A971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyBlog.Infrastructure", "TinyBlog.Infrastructure\TinyBlog.Infrastructure.csproj", "{C005BAE4-3E4F-43BA-BF48-D098974587B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{AFECF559-A8F7-4B0A-95C7-D8A2BA61C89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFECF559-A8F7-4B0A-95C7-D8A2BA61C89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFECF559-A8F7-4B0A-95C7-D8A2BA61C89B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{093240C5-B8BD-4180-AF52-3F4A3B25A971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{093240C5-B8BD-4180-AF52-3F4A3B25A971}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{093240C5-B8BD-4180-AF52-3F4A3B25A971}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{093240C5-B8BD-4180-AF52-3F4A3B25A971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C005BAE4-3E4F-43BA-BF48-D098974587B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C005BAE4-3E4F-43BA-BF48-D098974587B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C005BAE4-3E4F-43BA-BF48-D098974587B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C005BAE4-3E4F-43BA-BF48-D098974587B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
