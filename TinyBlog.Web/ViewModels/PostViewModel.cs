@@ -6,7 +6,8 @@ namespace TinyBlog.Web.ViewModels
 {
     public class PostViewModel
     {
-        public string Id { get; set; }
+        public string PartitionKey { get; set; }
+        public string RowKey { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

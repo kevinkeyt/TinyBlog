@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Web.Interfaces;
@@ -21,8 +22,11 @@ namespace TinyBlog.Web.Services
 
         public PostViewModel Add(PostViewModel model)
         {
-            var post = new Post(model.Title, model.Author, model.Slug)
+            var post = new Post
             {
+                Title = model.Title,
+                Author = model.Author,
+                Slug = model.Slug,
                 Excerpt = model.Excerpt,
                 Content = model.Content
             };
@@ -33,19 +37,20 @@ namespace TinyBlog.Web.Services
             return mapper.Map<PostViewModel>(post);
         }
 
-        public IEnumerable<PostViewModel> GetAll()
+        public async Task<IEnumerable<PostViewModel>> GetAll()
         {
-            return postRepository.ListAll().Select(m => mapper.Map<PostViewModel>(m));
+            var posts = await postRepository.ListAll();
+            return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
         public PostViewModel GetById(string id)
         {
-            return mapper.Map<PostViewModel>(postRepository.GetById(id));
+            return null;// mapper.Map<PostViewModel>(postRepository.GetById(id));
         }
 
-        public Dictionary<string, int> GetCategories()
+        public async Task<Dictionary<string, int>> GetCategories()
         {
-            return postRepository.GetCategories();
+            return await postRepository.GetCategories();
         }
 
         public PostViewModel GetPostBySlug(string slug, bool IsAdmin)
@@ -53,14 +58,16 @@ namespace TinyBlog.Web.Services
             return mapper.Map<PostViewModel>(postRepository.GetPostBySlug(slug, IsAdmin));
         }
 
-        public IEnumerable<PostViewModel> GetPostsByCategory(string category)
+        public async Task<IEnumerable<PostViewModel>> GetPostsByCategory(string category)
         {
-            return postRepository.GetPostsByCategory(category).Select(m => mapper.Map<PostViewModel>(m));
+            var posts = await postRepository.GetPostsByCategory(category);
+            return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
-        public IEnumerable<PostViewModel> GetPublicPosts()
+        public async Task<IEnumerable<PostViewModel>> GetPublicPosts()
         {
-            return postRepository.GetPublicPosts().Select(m => mapper.Map<PostViewModel>(m));
+            var posts = await postRepository.GetPublicPosts();
+            return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
         public void Update(PostViewModel model)

@@ -49,16 +49,16 @@ namespace TinyBlog.Web.Pages.Admin
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if(ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(Post.Id))
+                if (string.IsNullOrEmpty(Post.RowKey))
                 {
                     // Add
                     Post = postService.Add(Post);
                     logger.LogInformation($"Post {Post.Title} was added on {DateTime.UtcNow}.");
-                    return Redirect($"/Admin/Post/{Post.Id}");
+                    return Redirect($"/Admin/Post/{Post.RowKey}");
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace TinyBlog.Web.Pages.Admin
                 }
             }
             Blog = blogService.GetBlogInfo();
-            Categories = postService.GetCategories();
+            Categories = await postService.GetCategories();
             return Page();
         }
 

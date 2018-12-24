@@ -20,6 +20,8 @@ using TinyBlog.Web.Extensions;
 using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.Services;
 using Westwind.AspNetCore.Markdown;
+using TinyBlog.Core.Entities;
+using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Web
 {
@@ -42,11 +44,17 @@ namespace TinyBlog.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IBlogRepository, BlogRepository>();
-            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IBlogRepository, BlogFileRepository>();
+            services.AddScoped<IPostRepository, AzureTablePostRepository>();
 
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPostService, PostService>();
+
+            services.AddScoped<IAzureTableStorage<Post>>(factory =>
+            {
+                return new AzureTableStorage<Post>(
+                    new AzureTableSettings(Configuration["AppSettings:StorageAccount"], Configuration["AppSettings:StorageKey"], "posts"));
+            });
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

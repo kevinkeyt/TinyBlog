@@ -17,7 +17,7 @@
             <a href="/post/@Post.Slug" class="btn btn-info">View More</a>
             @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                <a href="/admin/post/@Post.Id" class="btn btn-primary">Edit Post</a><br /><br />
+                <a href="/admin/post/@Post.RowKey" class="btn btn-primary">Edit Post</a><br /><br />
             }
             <p class="blog-post-meta">
                 <i class="glyphicon glyphicon-tag"></i>&nbsp;

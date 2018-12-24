@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TinyBlog.Web.Interfaces;
 using TinyBlog.Web.ViewModels;
 
@@ -17,7 +18,12 @@ namespace TinyBlog.Web.Pages
             this.blogService = blogService;
             this.postService = postService;
             Blog = blogService.GetBlogInfo();
-            Categories = postService.GetCategories();
+            Categories = new Dictionary<string, int>(); //LoadCategories();
+        }
+
+        public async Task LoadCategories()
+        {
+            Categories = await postService.GetCategories();
         }
     }
 }

@@ -10,14 +10,19 @@ namespace TinyBlog.Test
     {
         private static Post CreatePost()
         {
-            return new Post("Test Post", "Joe Tester", "test-post");
+            return new Post
+            {
+                Title = "Test Post",
+                Author = "Joe Tester",
+                Slug = "test-post"
+            };
         }
 
         [Fact]
         public void NewPost_HasId()
         {
             var post = CreatePost();
-            Assert.NotEqual(string.Empty, post.Id);
+            Assert.NotEqual(string.Empty, post.RowKey);
         }
 
         [Fact]

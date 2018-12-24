@@ -8,7 +8,7 @@ using TinyBlog.Core.Interfaces;
 
 namespace TinyBlog.Infrastructure.Repos
 {
-    public class BlogRepository : IBlogRepository
+    public class BlogFileRepository : IBlogRepository
     {
 
         private readonly IHostingEnvironment environment;
@@ -16,7 +16,7 @@ namespace TinyBlog.Infrastructure.Repos
         private readonly MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(24));
         private readonly string folder;
 
-        public BlogRepository(IHostingEnvironment environment, IMemoryCache memoryCache)
+        public BlogFileRepository(IHostingEnvironment environment, IMemoryCache memoryCache)
         {
             this.environment = environment;
             this.memoryCache = memoryCache;
