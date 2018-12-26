@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 
@@ -23,7 +24,7 @@ namespace TinyBlog.Infrastructure.Repos
             folder = environment.ContentRootPath + "\\Data\\";
         }
 
-        public Blog GetBlogInfo()
+        public async Task<Blog> GetBlogInfo()
         {
             if (!Directory.Exists(folder))
             {
@@ -34,7 +35,7 @@ namespace TinyBlog.Infrastructure.Repos
             if (!File.Exists(file))
             {
                 var json = JsonConvert.SerializeObject(blogInfo);
-                File.WriteAllText(file, json);
+                await File.WriteAllTextAsync(file, json);
             }
 
             if (!memoryCache.TryGetValue("bloginfo", out blogInfo))
@@ -45,19 +46,21 @@ namespace TinyBlog.Infrastructure.Repos
             return blogInfo;
         }
 
-        public void SaveBlogInfo(Blog blog)
+        public async Task SaveBlogInfo(Blog blog)
         {
             var json = JsonConvert.SerializeObject(blog);
             var file = Path.Combine(folder, "BlogInfo.json");
             memoryCache.Remove("bloginfo");
             memoryCache.Set("bloginfo", blog, cacheOptions);
-            File.WriteAllText(file, json);
+            await File.WriteAllTextAsync(file, json);
         }
 
         private Blog InitBlogInfo()
         {
-            return new Blog("Tiny Blog", "Tiny Blog Engine")
+            return new Blog()
             {
+                Name = "Tiny Blog",
+                Title = "Tiny Blog Engine",
                 Description = "A simple blogging engine for small to medium size blogs.",
                 ShareUrl = "https://www.myblog.com",
                 ShareImageUrl = "https://www.myblog.com",

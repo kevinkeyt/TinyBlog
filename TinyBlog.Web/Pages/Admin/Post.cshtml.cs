@@ -67,7 +67,7 @@ namespace TinyBlog.Web.Pages.Admin
                     return Redirect($"/Admin/Post/{Post.RowKey}/{GetPartitionKey(Post)}");
                 }
             }
-            Blog = blogService.GetBlogInfo();
+            Blog = await blogService.GetBlogInfo();
             Categories = await postService.GetCategories();
             return Page();
         }

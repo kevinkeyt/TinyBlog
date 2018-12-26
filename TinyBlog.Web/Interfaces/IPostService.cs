@@ -7,6 +7,7 @@ namespace TinyBlog.Web.Interfaces
     public interface IPostService
     {
         Task<Dictionary<string, int>> GetCategories();
+        Dictionary<string, int> GetCategoriesNonAsync();
         Task<IEnumerable<PostViewModel>> GetPostsByCategory(string category);
         Task<IEnumerable<PostViewModel>> GetAll();
         Task<IEnumerable<PostViewModel>> GetPublicPosts();

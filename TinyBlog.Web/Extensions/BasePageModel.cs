@@ -17,13 +17,9 @@ namespace TinyBlog.Web.Pages
         {
             this.blogService = blogService;
             this.postService = postService;
-            Blog = blogService.GetBlogInfo();
-            Categories = new Dictionary<string, int>(); //LoadCategories();
+            Blog = blogService.GetBlogInfoNonAsync();
+            Categories = postService.GetCategoriesNonAsync();
         }
 
-        public async Task LoadCategories()
-        {
-            Categories = await postService.GetCategories();
-        }
     }
 }

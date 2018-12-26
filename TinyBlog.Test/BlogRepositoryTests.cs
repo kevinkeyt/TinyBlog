@@ -1,4 +1,5 @@
 using Moq;
+using System.Threading.Tasks;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 using Xunit;
@@ -8,9 +9,13 @@ namespace TinyBlog.Test
     public class BlogRepositoryTests
     {
         private readonly Mock<IBlogRepository> moqRepo;
-        private static Blog CreateBlogItem()
+        private static async Task<Blog> CreateBlogItem()
         {
-            return new Blog("Test Blog", "Test Title");
+            return await Task.Run(() => new Blog()
+            {
+                Title = "Tiny Blog Engine",
+                Name = "Tiny Blog"
+            });
         }
         public BlogRepositoryTests()
         {
@@ -25,12 +30,10 @@ namespace TinyBlog.Test
         }
 
         [Fact]
-        public void Save_Accepts_Typeof_Blog()
+        public async Task Save_Accepts_Typeof_Blog()
         {
-            moqRepo.Setup(x => x.SaveBlogInfo(CreateBlogItem()));
-
-            var blog = CreateBlogItem();
-            moqRepo.Object.SaveBlogInfo(blog);
+            var blog = await CreateBlogItem();
+            await moqRepo.Object.SaveBlogInfo(blog);
             Assert.IsType<Blog>(blog);
         }
     }

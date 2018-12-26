@@ -68,6 +68,12 @@ namespace TinyBlog.Web.Services
             return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
+        public Dictionary<string, int> GetCategoriesNonAsync()
+        {
+            Task<Dictionary<string, int>> task = Task.Run<Dictionary<string, int>>(async () => await GetCategories());
+            return task.Result;
+        }
+
         public async Task<IEnumerable<PostViewModel>> GetPublicPosts()
         {
             var posts = await postRepository.GetPublicPosts();

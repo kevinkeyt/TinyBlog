@@ -1,10 +1,12 @@
-﻿using TinyBlog.Web.ViewModels;
+﻿using System.Threading.Tasks;
+using TinyBlog.Web.ViewModels;
 
 namespace TinyBlog.Web.Interfaces
 {
     public interface IBlogService
     {
-        BlogViewModel GetBlogInfo();
-        void SaveBlogInfo(BlogViewModel model);
+        Task<BlogViewModel> GetBlogInfo();
+        BlogViewModel GetBlogInfoNonAsync();
+        Task SaveBlogInfo(BlogViewModel model);
     }
 }

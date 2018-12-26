@@ -5,14 +5,8 @@ namespace TinyBlog.Core.Entities
 {
     public class Blog : BaseEntity
     {
-        public Blog(string name, string title) : this()
-        {
-            RowKey = Guid.NewGuid().ToString();
-            Name = name;
-            Title = title;
-        }
 
-        private Blog()
+        public Blog()
         {}
 
         public string Name { get; set; }

@@ -1,10 +1,11 @@
-﻿using TinyBlog.Core.Entities;
+﻿using System.Threading.Tasks;
+using TinyBlog.Core.Entities;
 
 namespace TinyBlog.Core.Interfaces
 {
     public interface IBlogRepository
     {
-        Blog GetBlogInfo();
-        void SaveBlogInfo(Blog blog);
+        Task<Blog> GetBlogInfo();
+        Task SaveBlogInfo(Blog blog);
     }
 }

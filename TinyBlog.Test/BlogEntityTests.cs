@@ -7,7 +7,11 @@ namespace TinyBlog.Test
     {
         private static Blog CreateBlogItem()
         {
-            return new Blog("Test Blog", "Test Title");
+            return new Blog()
+            {
+                Title = "Tiny Blog Engine",
+                Name = "Tiny Blog"
+            };
         }
 
 

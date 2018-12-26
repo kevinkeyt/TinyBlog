@@ -53,12 +53,21 @@ namespace TinyBlog.Web
                     new AzureTableSettings(
                         storageAccount: Configuration["AppSettings:StorageAccount"],
                         storageKey: Configuration["AppSettings:StorageKey"],
-                        tableName: "posts"));
+                        tableName: "Posts"));
             });
             services.AddScoped<IPostRepository, AzureTablePostRepository>();
+            services.AddScoped<IAzureTableStorage<Blog>>(factory =>
+            {
+                return new AzureTableStorage<Blog>(
+                    new AzureTableSettings(
+                        storageAccount: Configuration["AppSettings:StorageAccount"],
+                        storageKey: Configuration["AppSettings:StorageKey"],
+                        tableName: "BlogInfo"));
+            });
+            services.AddScoped<IBlogRepository, AzureTableBlogRepository>();
 
             // Uncomment for File Repository
-            services.AddScoped<IBlogRepository, BlogFileRepository>();
+            // services.AddScoped<IBlogRepository, BlogFileRepository>();
             // services.AddScoped<IPostRepository, PostRepository>();
 
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Threading.Tasks;
 using TinyBlog.Core.Entities;
 using TinyBlog.Core.Interfaces;
 using TinyBlog.Web.Interfaces;
@@ -17,14 +18,21 @@ namespace TinyBlog.Web.Services
             this.mapper = mapper;
         }
 
-        public BlogViewModel GetBlogInfo()
+        public async Task<BlogViewModel> GetBlogInfo()
         {
-            return mapper.Map<BlogViewModel>(blogRepository.GetBlogInfo());
+            var blogInfo = await blogRepository.GetBlogInfo();
+            return mapper.Map<BlogViewModel>(blogInfo);
         }
 
-        public void SaveBlogInfo(BlogViewModel model)
+        public BlogViewModel GetBlogInfoNonAsync()
         {
-            blogRepository.SaveBlogInfo(mapper.Map<Blog>(model));
+            Task<BlogViewModel> task = Task.Run<BlogViewModel>(async () => await GetBlogInfo());
+            return task.Result;
+        }
+
+        public async Task SaveBlogInfo(BlogViewModel model)
+        {
+            await blogRepository.SaveBlogInfo(mapper.Map<Blog>(model));
         }
     }
 }
