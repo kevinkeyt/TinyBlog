@@ -33,7 +33,7 @@ namespace TinyBlog.Web.Services
                 LastModified = DateTime.UtcNow
             };
             post.SetPubDate(model.PubDate);
-            foreach (var category in model.PostCategories)
+            foreach (var category in model.GetPostCategories())
                 post.AddCategory(category);
             await postRepository.Add(post);
             return mapper.Map<PostViewModel>(post);
@@ -78,7 +78,7 @@ namespace TinyBlog.Web.Services
         {
             var post = mapper.Map<Post>(model);
             post.SetPubDate(model.PubDate);
-            foreach (var category in model.PostCategories)
+            foreach (var category in model.GetPostCategories())
                 post.AddCategory(category);
             await postRepository.Update(post);
         }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +39,7 @@ namespace TinyBlog.Infrastructure.Repos
         {
             var posts = await GetPublicPosts();
             return posts
-                .SelectMany(p => p.PostCategories)
+                .SelectMany(p => p.GetPostCategories())
                 .GroupBy(c => c, (c, items) => new { Category = c, Count = items.Count() })
                 .OrderBy(x => x.Category)
                 .ToDictionary(x => x.Category, x => x.Count);
@@ -68,7 +67,7 @@ namespace TinyBlog.Infrastructure.Repos
             TableQuery<Post> tableQuery = new TableQuery<Post>().Where(TableQuery.CombineFilters(
                 TableQuery.GenerateFilterConditionForBool("IsPublished", QueryComparisons.Equal, true),
                 TableOperators.And,
-                TableQuery.GenerateFilterConditionForDate("PubDate", QueryComparisons.GreaterThanOrEqual, DateTime.UtcNow)));
+                TableQuery.GenerateFilterConditionForDate("PubDate", QueryComparisons.LessThanOrEqual, DateTimeOffset.UtcNow)));
             return await Task.Run(() => table.ExecuteQuery(tableQuery));
         }
 

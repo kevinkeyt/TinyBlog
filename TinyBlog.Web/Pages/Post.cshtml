@@ -11,9 +11,9 @@
     <markdown markdown="@Model.Post.Content"></markdown>
     <p class="blog-post-meta">
         <i class="glyphicon glyphicon-tag"></i>&nbsp
-        @foreach (var c in Model.Categories)
+        @foreach (var c in Model.Post.GetPostCategories())
         {
-            <a href="/Index?c=@Uri.EscapeDataString(c.Key)">@c.Key</a>
+            <a href="/Index?c=@Uri.EscapeDataString(c)">@c</a>
             @:&nbsp;
         }
     </p>

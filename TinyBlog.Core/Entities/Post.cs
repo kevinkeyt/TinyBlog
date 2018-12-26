@@ -10,7 +10,6 @@ namespace TinyBlog.Core.Entities
     {
         public Post() {
             LastModified = DateTime.UtcNow;
-            PostCategories = new List<string>();
         }
 
         public string Title { get; set; }
@@ -21,7 +20,7 @@ namespace TinyBlog.Core.Entities
         public DateTime PubDate { get; set; }
         public DateTime LastModified { get; set; }
         public bool IsPublished { get; set; }
-        public List<string> PostCategories { get; set; }
+        public string PostCategories { get; set; }
 
         public void SetPubDate(DateTime pubDate)
         {
@@ -33,30 +32,33 @@ namespace TinyBlog.Core.Entities
 
         public (bool, string)AddCategory(string category)
         {
-            if(PostCategories != null)
+            var _postCategories = GetPostCategories();
+            if (!_postCategories.Any(x => x == category))
             {
-                if(!PostCategories.Any(x => x == category))
-                {
-                    PostCategories.Add(category);
-                    return (true, "Success");
-                }
-                return (false, "Already exists");
+                _postCategories.Add(category);
+                PostCategories = string.Join(",", _postCategories);
+                return (true, "Success");
             }
-            return (false, "Array is null");
+            return (false, "Already exists");
         }
 
         public (bool, string) RemoveCategory(string category)
         {
-            if (PostCategories != null)
+            var _postCategories = GetPostCategories();
+            if (_postCategories.Any(x => x == category))
             {
-                if (PostCategories.Any(x => x == category))
-                {
-                    PostCategories.Remove(category);
-                    return (true, "Success");
-                }
-                return (false, "Does not exist");
+                _postCategories.Remove(category);
+                PostCategories = string.Join(",", _postCategories);
+                return (true, "Success");
             }
-            return (false, "Array is null");
+            return (false, "Does not exist");
+        }
+
+        public List<string> GetPostCategories()
+        {
+            if (!string.IsNullOrEmpty(PostCategories))
+                return PostCategories.Split(',').ToList();
+            return new List<string>();
         }
     }
 }

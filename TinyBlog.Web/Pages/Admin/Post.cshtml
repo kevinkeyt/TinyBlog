@@ -13,6 +13,7 @@
             <h2>Post Info</h2>
             <input type="hidden" id="id" asp-for="Post.RowKey" />
             <input type="hidden" asp-for="Post.LastModified" />
+            <input type="hidden" id="post-categories" asp-for="Post.PostCategories" />
             <div class="form-group">
                 <label for="title">Title</label>
                 <input class="form-control" placeholder="Title" asp-for="Post.Title" id="title" />
@@ -66,7 +67,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         var categories = [];
-        @foreach(var c in Model.Post.PostCategories)
+        @foreach(var c in Model.Post.GetPostCategories())
         {
             @:categories.push("@c");
         }
@@ -83,6 +84,7 @@
             if (!exists) {
                 addCategoryToDOM(categories.length, category);
                 categories.push(category);
+                $("#post-categories").val(categories.join(', '));
                 $('#newcategory').val('').focus();
             } else {
                 alert('Category already exists!');
@@ -97,6 +99,7 @@
             if (index > -1) {
                 $("#cat_" + index).remove();
                 categories.splice(index, 1);
+                $("#post-categories").val(categories.join(', '));
             }
         }
     </script>

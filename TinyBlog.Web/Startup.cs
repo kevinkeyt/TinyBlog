@@ -59,7 +59,7 @@ namespace TinyBlog.Web
 
             // Uncomment for File Repository
             services.AddScoped<IBlogRepository, BlogFileRepository>();
-            services.AddScoped<IPostRepository, PostRepository>();
+            // services.AddScoped<IPostRepository, PostRepository>();
 
 
             // WebSite Services

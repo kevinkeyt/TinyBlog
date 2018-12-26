@@ -71,7 +71,7 @@ namespace TinyBlog.Infrastructure.Repos
         public async Task<Dictionary<string, int>> GetCategories()
         {
             var list = await GetPublicPosts();
-            return list.SelectMany(p => p.PostCategories)
+            return list.SelectMany(p => p.GetPostCategories())
                 .GroupBy(c => c, (c, items) => new { Category = c, Count = items.Count() })
                 .OrderBy(x => x.Category)
                 .ToDictionary(x => x.Category, x => x.Count);

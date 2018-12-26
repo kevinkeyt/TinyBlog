@@ -21,7 +21,7 @@
             }
             <p class="blog-post-meta">
                 <i class="glyphicon glyphicon-tag"></i>&nbsp;
-                @foreach (var c in Post.PostCategories)
+                @foreach (var c in Post.GetPostCategories())
                 {
                     <a href="/Index?c=@Uri.EscapeDataString(c)">@c</a>
                     @:&nbsp;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace TinyBlog.Web.ViewModels
 {
@@ -21,6 +22,13 @@ namespace TinyBlog.Web.ViewModels
         public DateTime PubDate { get; set; }
         public bool IsPublished { get; set; }
         public DateTime LastModified { get; set; }
-        public List<string> PostCategories { get; set; } = new List<string>();
+        public string PostCategories { get; set; }
+
+        public List<string> GetPostCategories()
+        {
+            if (!string.IsNullOrEmpty(PostCategories))
+                return PostCategories.Split(",").ToList();
+            return new List<string>();
+        }
     }
 }

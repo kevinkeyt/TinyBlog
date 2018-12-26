@@ -64,7 +64,7 @@ namespace TinyBlog.Test
             var post = CreatePost();
             var (success, msg) = post.AddCategory("Test");
             Assert.True(success);
-            Assert.True(post.PostCategories.Count == 1);
+            Assert.True(post.GetPostCategories().Count == 1);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace TinyBlog.Test
             post.AddCategory("Test");
             var (success, msg) = post.RemoveCategory("Test");
             Assert.True(success);
-            Assert.True(post.PostCategories.Count == 0);
+            Assert.True(post.GetPostCategories().Count == 0);
         }
     }
 }
