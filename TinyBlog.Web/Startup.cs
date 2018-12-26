@@ -44,9 +44,25 @@ namespace TinyBlog.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IBlogRepository, BlogFileRepository>();
+            // Infrastructure Services
+
+            // Uncomment for Azure Table Repository
+            services.AddScoped<IAzureTableStorage<Post>>(factory =>
+            {
+                return new AzureTableStorage<Post>(
+                    new AzureTableSettings(
+                        storageAccount: Configuration["AppSettings:StorageAccount"],
+                        storageKey: Configuration["AppSettings:StorageKey"],
+                        tableName: "posts"));
+            });
             services.AddScoped<IPostRepository, AzureTablePostRepository>();
 
+            // Uncomment for File Repository
+            services.AddScoped<IBlogRepository, BlogFileRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+
+
+            // WebSite Services
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPostService, PostService>();
 

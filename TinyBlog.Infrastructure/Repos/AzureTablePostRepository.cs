@@ -11,50 +11,29 @@ namespace TinyBlog.Infrastructure.Repos
 {
     public class AzureTablePostRepository : IPostRepository
     {
-        private readonly CloudStorageAccount cloudStorageAccount;
-        private readonly IConfiguration configuration;
-        private readonly CloudTableClient tableClient;
-        private readonly CloudTable table;
+        private readonly IAzureTableStorage<Post> azureTableStorage;
 
-        public AzureTablePostRepository(IConfiguration configuration)
+        public AzureTablePostRepository(IAzureTableStorage<Post> azureTableStorage)
         {
-            this.configuration = configuration;
-            cloudStorageAccount = CloudStorageAccount.Parse(configuration["AppSettings:StorageConnectionString"]);
-            // Create table if it does not exist.
-            tableClient = cloudStorageAccount.CreateCloudTableClient();
-            table = tableClient.GetTableReference("Posts");
-            table.CreateIfNotExists();
+            this.azureTableStorage = azureTableStorage;
         }
 
         public async Task<Post> Add(Post entity)
         {
             entity.PartitionKey = GetPartitionKey(entity);
             entity.RowKey = Guid.NewGuid().ToString();
-            TableOperation tableOperation = TableOperation.Insert(entity);
-            await table.ExecuteAsync(tableOperation);
+            await azureTableStorage.Insert(entity);
             return entity;
         }
 
         public async Task Delete(Post entity)
         {
-            TableOperation tableOperation = TableOperation.Retrieve<Post>(GetPartitionKey(entity), entity.RowKey);
-            TableResult tableResult = await table.ExecuteAsync(tableOperation);
-
-            Post deleteItem = (Post)tableResult.Result;
-
-            if (deleteItem != null)
-            {
-                TableOperation deleteOperation = TableOperation.Delete(deleteItem);
-                await table.ExecuteAsync(deleteOperation);
-            }
+            await azureTableStorage.Delete(entity.PartitionKey, entity.RowKey);
         }
 
         public async Task<Post> GetById(string id, string partitionKey = "")
         {
-            TableOperation tableOperation = TableOperation.Retrieve<Post>(partitionKey, id);
-            TableResult tableResult = await table.ExecuteAsync(tableOperation);
-
-            return (Post)tableResult.Result;
+            return await azureTableStorage.GetItem(partitionKey, id);
         }
 
         public async Task<Dictionary<string, int>> GetCategories()
@@ -69,6 +48,7 @@ namespace TinyBlog.Infrastructure.Repos
 
         public async Task<Post> GetPostBySlug(string slug)
         {
+            var table = await azureTableStorage.GetTableAsync();
             var tableQuery = new TableQuery<Post>().Where(TableQuery.GenerateFilterCondition("Slug", QueryComparisons.Equal, slug)).Take(1);
             IEnumerable<Post> tableResult = await Task.Run(() => table.ExecuteQuery(tableQuery));
             if (tableResult.Any())
@@ -84,6 +64,7 @@ namespace TinyBlog.Infrastructure.Repos
 
         public async Task<IEnumerable<Post>> GetPublicPosts()
         {
+            var table = await azureTableStorage.GetTableAsync();
             TableQuery<Post> tableQuery = new TableQuery<Post>().Where(TableQuery.CombineFilters(
                 TableQuery.GenerateFilterConditionForBool("IsPublished", QueryComparisons.Equal, true),
                 TableOperators.And,
@@ -93,15 +74,13 @@ namespace TinyBlog.Infrastructure.Repos
 
         public async Task<List<Post>> ListAll()
         {
-            var tableQuery = new TableQuery<Post>();
-            return await Task.Run(() => table.ExecuteQuery(tableQuery).ToList());
+            return await azureTableStorage.GetList();
         }
 
         public async Task Update(Post entity)
         {
             entity.PartitionKey = GetPartitionKey(entity);
-            TableOperation tableOperation = TableOperation.InsertOrReplace(entity);
-            await table.ExecuteAsync(tableOperation);
+            await azureTableStorage.Update(entity);
         }
 
         private string GetPartitionKey(Post post)
