@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TinyBlog.Core.Entities;
+﻿using TinyBlog.Core.Entities;
 using Xunit;
 
 namespace TinyBlog.Test
@@ -18,7 +15,7 @@ namespace TinyBlog.Test
         public void NewBlog_HasId()
         {
             var blog = CreateBlogItem();
-            Assert.NotEqual(string.Empty, blog.Id);
+            Assert.NotEqual(string.Empty, blog.RowKey);
         }
 
         [Fact]

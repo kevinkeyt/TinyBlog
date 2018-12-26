@@ -50,12 +50,6 @@ namespace TinyBlog.Web
             services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<IPostService, PostService>();
 
-            services.AddScoped<IAzureTableStorage<Post>>(factory =>
-            {
-                return new AzureTableStorage<Post>(
-                    new AzureTableSettings(Configuration["AppSettings:StorageAccount"], Configuration["AppSettings:StorageKey"], "posts"));
-            });
-
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMemoryCache();

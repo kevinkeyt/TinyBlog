@@ -9,10 +9,10 @@ namespace TinyBlog.Core.Interfaces
         Task<IEnumerable<Post>> GetPublicPosts();
         Task<IEnumerable<Post>> GetPostsByCategory(string category);
         Task<List<Post>> ListAll();
-        Task<Post> GetPostBySlug(string slug, bool authenticated = false);
+        Task<Post> GetPostBySlug(string slug);
         Task<Dictionary<string, int>> GetCategories();
         Task<Post> Add(Post post);
         Task Update(Post post);
-        Task<Post> GetById(string Id);
+        Task<Post> GetById(string id, string partitionKey = "");
     }
 }

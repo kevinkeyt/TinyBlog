@@ -10,9 +10,9 @@ namespace TinyBlog.Web.Interfaces
         Task<IEnumerable<PostViewModel>> GetPostsByCategory(string category);
         Task<IEnumerable<PostViewModel>> GetAll();
         Task<IEnumerable<PostViewModel>> GetPublicPosts();
-        PostViewModel GetPostBySlug(string slug, bool IsAdmin);
-        PostViewModel GetById(string id);
-        void Update(PostViewModel model);
-        PostViewModel Add(PostViewModel model);
+        Task<PostViewModel> GetPostBySlug(string slug);
+        Task<PostViewModel> GetById(string id, string partitionKey);
+        Task Update(PostViewModel model);
+        Task<PostViewModel> Add(PostViewModel model);
     }
 }

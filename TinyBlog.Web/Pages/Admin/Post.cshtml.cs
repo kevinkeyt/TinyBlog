@@ -27,7 +27,7 @@ namespace TinyBlog.Web.Pages.Admin
             this.logger = logger;
         }
 
-        public IActionResult OnGet(string id)
+        public async Task<IActionResult> OnGet(string id, string partitionKey)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -38,7 +38,7 @@ namespace TinyBlog.Web.Pages.Admin
             }
             else
             {
-                Post = postService.GetById(id);
+                Post = await postService.GetById(id, partitionKey);
             }
             if(Post == null)
             {
@@ -56,14 +56,15 @@ namespace TinyBlog.Web.Pages.Admin
                 if (string.IsNullOrEmpty(Post.RowKey))
                 {
                     // Add
-                    Post = postService.Add(Post);
+                    Post = await postService.Add(Post);
                     logger.LogInformation($"Post {Post.Title} was added on {DateTime.UtcNow}.");
-                    return Redirect($"/Admin/Post/{Post.RowKey}");
+                    return Redirect($"/Admin/Post/{Post.RowKey}/{GetPartitionKey(Post)}");
                 }
                 else
                 {
-                    postService.Update(Post);
+                    await postService.Update(Post);
                     logger.LogInformation($"Post {Post.Title} was updated on {DateTime.UtcNow}.");
+                    return Redirect($"/Admin/Post/{Post.RowKey}/{GetPartitionKey(Post)}");
                 }
             }
             Blog = blogService.GetBlogInfo();
@@ -94,6 +95,11 @@ namespace TinyBlog.Web.Pages.Admin
                 return new JsonResult(new { url = "/images/" + file.FileName });
             }
             return null;
+        }
+
+        private string GetPartitionKey(PostViewModel post)
+        {
+            return post.PubDate.ToString("yyyy-MM");
         }
     }
 }

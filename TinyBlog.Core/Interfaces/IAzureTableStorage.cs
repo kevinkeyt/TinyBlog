@@ -4,7 +4,7 @@ using TinyBlog.Core.SharedKernel;
 
 namespace TinyBlog.Core.Interfaces
 {
-    public interface IAzureTableStorage<T> where T : AzureTableEntity, new()
+    public interface IAzureTableStorage<T> where T : BaseEntity, new()
     {
         Task Delete(string partitionKey, string rowKey);
         Task<T> GetItem(string partitionKey, string rowKey);

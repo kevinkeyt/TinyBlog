@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace TinyBlog.Web.Services
             this.mapper = mapper;
         }
 
-        public PostViewModel Add(PostViewModel model)
+        public async Task<PostViewModel> Add(PostViewModel model)
         {
             var post = new Post
             {
@@ -28,12 +29,13 @@ namespace TinyBlog.Web.Services
                 Author = model.Author,
                 Slug = model.Slug,
                 Excerpt = model.Excerpt,
-                Content = model.Content
+                Content = model.Content,
+                LastModified = DateTime.UtcNow
             };
             post.SetPubDate(model.PubDate);
             foreach (var category in model.PostCategories)
                 post.AddCategory(category);
-            postRepository.Add(post);
+            await postRepository.Add(post);
             return mapper.Map<PostViewModel>(post);
         }
 
@@ -43,9 +45,10 @@ namespace TinyBlog.Web.Services
             return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
-        public PostViewModel GetById(string id)
+        public async Task<PostViewModel> GetById(string id, string partitionKey)
         {
-            return null;// mapper.Map<PostViewModel>(postRepository.GetById(id));
+            var post = await postRepository.GetById(id, partitionKey);
+            return mapper.Map<PostViewModel>(post);
         }
 
         public async Task<Dictionary<string, int>> GetCategories()
@@ -53,9 +56,10 @@ namespace TinyBlog.Web.Services
             return await postRepository.GetCategories();
         }
 
-        public PostViewModel GetPostBySlug(string slug, bool IsAdmin)
+        public async Task<PostViewModel> GetPostBySlug(string slug)
         {
-            return mapper.Map<PostViewModel>(postRepository.GetPostBySlug(slug, IsAdmin));
+            var post = await postRepository.GetPostBySlug(slug);
+            return mapper.Map<PostViewModel>(post);
         }
 
         public async Task<IEnumerable<PostViewModel>> GetPostsByCategory(string category)
@@ -70,13 +74,13 @@ namespace TinyBlog.Web.Services
             return posts.Select(m => mapper.Map<PostViewModel>(m));
         }
 
-        public void Update(PostViewModel model)
+        public async Task Update(PostViewModel model)
         {
             var post = mapper.Map<Post>(model);
             post.SetPubDate(model.PubDate);
             foreach (var category in model.PostCategories)
                 post.AddCategory(category);
-            postRepository.Update(post);
+            await postRepository.Update(post);
         }
     }
 }

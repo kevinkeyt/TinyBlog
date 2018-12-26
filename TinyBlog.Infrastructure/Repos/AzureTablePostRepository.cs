@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,30 +11,50 @@ namespace TinyBlog.Infrastructure.Repos
 {
     public class AzureTablePostRepository : IPostRepository
     {
-        private readonly IAzureTableStorage<Post> azureTableStorage;
-        private readonly string _partitionKey = "posts";
+        private readonly CloudStorageAccount cloudStorageAccount;
+        private readonly IConfiguration configuration;
+        private readonly CloudTableClient tableClient;
+        private readonly CloudTable table;
 
-        public AzureTablePostRepository(IAzureTableStorage<Post> azureTableStorage)
+        public AzureTablePostRepository(IConfiguration configuration)
         {
-            this.azureTableStorage = azureTableStorage;
+            this.configuration = configuration;
+            cloudStorageAccount = CloudStorageAccount.Parse(configuration["AppSettings:StorageConnectionString"]);
+            // Create table if it does not exist.
+            tableClient = cloudStorageAccount.CreateCloudTableClient();
+            table = tableClient.GetTableReference("Posts");
+            table.CreateIfNotExists();
         }
 
         public async Task<Post> Add(Post entity)
         {
-            entity.PartitionKey = _partitionKey;
+            entity.PartitionKey = GetPartitionKey(entity);
             entity.RowKey = Guid.NewGuid().ToString();
-            await azureTableStorage.Insert(entity);
+            TableOperation tableOperation = TableOperation.Insert(entity);
+            await table.ExecuteAsync(tableOperation);
             return entity;
         }
 
         public async Task Delete(Post entity)
         {
-            await azureTableStorage.Delete(_partitionKey, entity.RowKey);
+            TableOperation tableOperation = TableOperation.Retrieve<Post>(GetPartitionKey(entity), entity.RowKey);
+            TableResult tableResult = await table.ExecuteAsync(tableOperation);
+
+            Post deleteItem = (Post)tableResult.Result;
+
+            if (deleteItem != null)
+            {
+                TableOperation deleteOperation = TableOperation.Delete(deleteItem);
+                await table.ExecuteAsync(deleteOperation);
+            }
         }
 
-        public async Task<Post> GetById(string id)
+        public async Task<Post> GetById(string id, string partitionKey = "")
         {
-            return await azureTableStorage.GetItem(_partitionKey, id);
+            TableOperation tableOperation = TableOperation.Retrieve<Post>(partitionKey, id);
+            TableResult tableResult = await table.ExecuteAsync(tableOperation);
+
+            return (Post)tableResult.Result;
         }
 
         public async Task<Dictionary<string, int>> GetCategories()
@@ -45,18 +67,13 @@ namespace TinyBlog.Infrastructure.Repos
                 .ToDictionary(x => x.Category, x => x.Count);
         }
 
-        public async Task<Post> GetPostBySlug(string slug, bool authenticated = false)
+        public async Task<Post> GetPostBySlug(string slug)
         {
-            if (authenticated)
-            {
-                var posts = await ListAll();
-                return posts.SingleOrDefault(x => x.Slug == slug);
-            }
-            else
-            {
-                var posts = await GetPublicPosts();
-                return posts.SingleOrDefault(x => x.Slug == slug);
-            }
+            var tableQuery = new TableQuery<Post>().Where(TableQuery.GenerateFilterCondition("Slug", QueryComparisons.Equal, slug)).Take(1);
+            IEnumerable<Post> tableResult = await Task.Run(() => table.ExecuteQuery(tableQuery));
+            if (tableResult.Any())
+                return tableResult.FirstOrDefault();
+            return null;
         }
 
         public async Task<IEnumerable<Post>> GetPostsByCategory(string category)
@@ -67,18 +84,29 @@ namespace TinyBlog.Infrastructure.Repos
 
         public async Task<IEnumerable<Post>> GetPublicPosts()
         {
-            var list = await ListAll();
-            return list.Where(p => (p.IsPublished == true && p.PubDate <= DateTime.UtcNow));
+            TableQuery<Post> tableQuery = new TableQuery<Post>().Where(TableQuery.CombineFilters(
+                TableQuery.GenerateFilterConditionForBool("IsPublished", QueryComparisons.Equal, true),
+                TableOperators.And,
+                TableQuery.GenerateFilterConditionForDate("PubDate", QueryComparisons.GreaterThanOrEqual, DateTime.UtcNow)));
+            return await Task.Run(() => table.ExecuteQuery(tableQuery));
         }
 
         public async Task<List<Post>> ListAll()
         {
-            return await azureTableStorage.GetList();
+            var tableQuery = new TableQuery<Post>();
+            return await Task.Run(() => table.ExecuteQuery(tableQuery).ToList());
         }
 
         public async Task Update(Post entity)
         {
-            await azureTableStorage.Update(entity);
+            entity.PartitionKey = GetPartitionKey(entity);
+            TableOperation tableOperation = TableOperation.InsertOrReplace(entity);
+            await table.ExecuteAsync(tableOperation);
+        }
+
+        private string GetPartitionKey(Post post)
+        {
+            return post.PubDate.ToString("yyyy-MM");
         }
     }
 }

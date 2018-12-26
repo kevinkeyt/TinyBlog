@@ -7,7 +7,7 @@ namespace TinyBlog.Core.Entities
     {
         public Blog(string name, string title) : this()
         {
-            Id = Guid.NewGuid().ToString();
+            RowKey = Guid.NewGuid().ToString();
             Name = name;
             Title = title;
         }
