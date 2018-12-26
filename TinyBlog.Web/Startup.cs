@@ -51,8 +51,8 @@ namespace TinyBlog.Web
             {
                 return new AzureTableStorage<Post>(
                     new AzureTableSettings(
-                        storageAccount: Configuration["AppSettings:StorageAccount"],
-                        storageKey: Configuration["AppSettings:StorageKey"],
+                        storageAccount: Configuration["StorageAccount"],
+                        storageKey: Configuration["StorageKey"],
                         tableName: "Posts"));
             });
             services.AddScoped<IPostRepository, AzureTablePostRepository>();
@@ -60,8 +60,8 @@ namespace TinyBlog.Web
             {
                 return new AzureTableStorage<Blog>(
                     new AzureTableSettings(
-                        storageAccount: Configuration["AppSettings:StorageAccount"],
-                        storageKey: Configuration["AppSettings:StorageKey"],
+                        storageAccount: Configuration["StorageAccount"],
+                        storageKey: Configuration["StorageKey"],
                         tableName: "BlogInfo"));
             });
             services.AddScoped<IBlogRepository, AzureTableBlogRepository>();

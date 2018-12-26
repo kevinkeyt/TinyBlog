@@ -114,12 +114,12 @@ namespace TinyBlog.Web.Pages.Account
 
         private async Task<ApplicationUser> AuthenticateUser()
         {
-            if(Input.Email == configuration["AppSettings:LoginEmail"] && Input.Password == configuration["AppSettings:LoginPassword"])
+            if(Input.Email == configuration["LoginEmail"] && Input.Password == configuration["LoginPassword"])
             {
                 return await Task.Run(() => new ApplicationUser()
                 {
                     Email = Input.Email,
-                    FullName = configuration["AppSettings:FullName"]
+                    FullName = configuration["FullName"]
                 });
             }
             return null;
