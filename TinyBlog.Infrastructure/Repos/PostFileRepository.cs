@@ -41,6 +41,12 @@ namespace TinyBlog.Infrastructure.Repos
             {
                 Directory.CreateDirectory(folder);
             }
+
+            if (string.IsNullOrEmpty(entity.RowKey))
+            {
+                entity.RowKey = Guid.NewGuid().ToString();
+            }
+
             var file = Path.Combine(folder, entity.RowKey + ".json");
             if (!File.Exists(file))
             {

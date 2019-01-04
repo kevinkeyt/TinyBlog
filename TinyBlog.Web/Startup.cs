@@ -47,28 +47,28 @@ namespace TinyBlog.Web
             // Infrastructure Services
 
             // Uncomment for Azure Table Repository
-            services.AddScoped<IAzureTableStorage<Post>>(factory =>
-            {
-                return new AzureTableStorage<Post>(
-                    new AzureTableSettings(
-                        storageAccount: Configuration["StorageAccount"],
-                        storageKey: Configuration["StorageKey"],
-                        tableName: "Posts"));
-            });
-            services.AddScoped<IPostRepository, AzureTablePostRepository>();
-            services.AddScoped<IAzureTableStorage<Blog>>(factory =>
-            {
-                return new AzureTableStorage<Blog>(
-                    new AzureTableSettings(
-                        storageAccount: Configuration["StorageAccount"],
-                        storageKey: Configuration["StorageKey"],
-                        tableName: "BlogInfo"));
-            });
-            services.AddScoped<IBlogRepository, AzureTableBlogRepository>();
+            // services.AddScoped<IAzureTableStorage<Post>>(factory =>
+            // {
+            //     return new AzureTableStorage<Post>(
+            //         new AzureTableSettings(
+            //             storageAccount: Configuration["StorageAccount"],
+            //             storageKey: Configuration["StorageKey"],
+            //             tableName: "Posts"));
+            // });
+            // services.AddScoped<IPostRepository, AzureTablePostRepository>();
+            // services.AddScoped<IAzureTableStorage<Blog>>(factory =>
+            // {
+            //     return new AzureTableStorage<Blog>(
+            //         new AzureTableSettings(
+            //             storageAccount: Configuration["StorageAccount"],
+            //             storageKey: Configuration["StorageKey"],
+            //             tableName: "BlogInfo"));
+            // });
+            // services.AddScoped<IBlogRepository, AzureTableBlogRepository>();
 
             // Uncomment for File Repository
-            // services.AddScoped<IBlogRepository, BlogFileRepository>();
-            // services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IBlogRepository, BlogFileRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
 
             // WebSite Services

@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: tinyblog
+    ports: 
+      - 5000:80
+    container_name: tinyblog
+    environment:
+      - StorageAccount=
+      - StorageKey=
+      - LoginEmail=joe@testing.com
+      - LoginPassword=SecretP@ssw0rd
+      - FullName=Joe Tester
