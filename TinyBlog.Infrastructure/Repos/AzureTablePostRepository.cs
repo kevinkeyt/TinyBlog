@@ -37,12 +37,24 @@ namespace TinyBlog.Infrastructure.Repos
 
         public async Task<Dictionary<string, int>> GetCategories()
         {
+            Dictionary<string, int> list = new Dictionary<string, int>();
             var posts = await GetPublicPosts();
-            return posts
-                .SelectMany(p => p.GetPostCategories())
-                .GroupBy(c => c, (c, items) => new { Category = c, Count = items.Count() })
-                .OrderBy(x => x.Category)
-                .ToDictionary(x => x.Category, x => x.Count);
+            var categories = posts.SelectMany(p => p.GetPostCategories()).OrderBy(x => x);
+
+            foreach(var c in categories)
+            {
+                var key = c.Trim();
+                int val;
+                if(list.TryGetValue(key, out val))
+                {
+                    list[key] = val + 1;
+                }
+                else
+                {
+                    list.Add(key, 1);
+                }
+            }
+            return list;
         }
 
         public async Task<Post> GetPostBySlug(string slug)
@@ -68,7 +80,8 @@ namespace TinyBlog.Infrastructure.Repos
                 TableQuery.GenerateFilterConditionForBool("IsPublished", QueryComparisons.Equal, true),
                 TableOperators.And,
                 TableQuery.GenerateFilterConditionForDate("PubDate", QueryComparisons.LessThanOrEqual, DateTimeOffset.UtcNow)));
-            return await Task.Run(() => table.ExecuteQuery(tableQuery));
+            var qry =  await Task.Run(() => table.ExecuteQuery(tableQuery));
+            return qry.OrderByDescending(x => x.PubDate);
         }
 
         public async Task<List<Post>> ListAll()
