@@ -14,7 +14,8 @@ namespace TinyBlog.Test
             {
                 Title = "Test Post",
                 Author = "Joe Tester",
-                Slug = "test-post"
+                Slug = "test-post",
+                PostCategories = ""
             };
         }
 

@@ -23,10 +23,10 @@ namespace TinyBlog.Test
         }
 
         [Fact]
-        public void Get_BlogInfo_Is_Typeof_Blog()
+        public async Task Get_BlogInfo_Is_Typeof_Blog()
         {
             moqRepo.Setup(x => x.GetBlogInfo()).Returns(CreateBlogItem());
-            Assert.IsType<Blog>(moqRepo.Object.GetBlogInfo());
+            Assert.IsType<Blog>(await moqRepo.Object.GetBlogInfo());
         }
 
         [Fact]
